@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'bitmovin/ruby/version'
+require 'bitmovin/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "bitmovin-ruby"
-  spec.version       = Bitmovin::Ruby::VERSION
+  spec.version       = Bitmovin::VERSION
   spec.authors       = ["Daniel Hoelbling-Inzko"]
   spec.email         = ["daniel.hoelbling-inzko@bitmovin.com"]
 
