@@ -15,8 +15,8 @@ describe Bitmovin do
       expect(Bitmovin.client).not_to be_nil
     end
     it "should set correct API key on client" do
+      expect(Bitmovin::Client).to receive(:new).with({ api_key: 'foo' })
       Bitmovin.init('foo')
-      expect(Bitmovin.client.api_key).to eq('foo')
     end
   end
 end
