@@ -34,10 +34,11 @@ module Bitmovin
         raise BitmovinError.new(self), "Cannot save already persisted resource"
       end
 
-      Bitmovin.client.post do |post|
+      response = Bitmovin.client.post do |post|
         post.url self.class.resource_path
         post.body = collect_attributes
       end
+      response
     end
 
 

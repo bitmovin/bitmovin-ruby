@@ -15,3 +15,4 @@ module Bitmovin::Encoding
 end
 require 'bitmovin/encoding/inputs/s3_input'
 require 'bitmovin/encoding/inputs/rtmp_input'
+require 'bitmovin/encoding/inputs/generic_s3_input'
