@@ -29,7 +29,7 @@ module Bitmovin
       end
     end
 
-    def save
+    def save!
       if @id
         raise BitmovinError.new(self), "Cannot save already persisted resource"
       end

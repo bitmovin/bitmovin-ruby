@@ -81,11 +81,11 @@ def test_resource_methods(klass, path, resources)
         end
       end
 
-      it "should respond to .save()" do
-        expect(subject).to respond_to(:save).with(0).arguments
+      it "should respond to .save!()" do
+        expect(subject).to respond_to(:save!).with(0).arguments
       end
 
-      describe "save" do
+      describe "save!" do
 
         context "without id set" do
           let!(:body) do
@@ -100,19 +100,19 @@ def test_resource_methods(klass, path, resources)
           it "should call POST #{path}" do
             stub_request(:post, /.*#{path}/)
               .with(body: body)
-            expect(subject.save()).to have_requested(:post, /.*#{path}/)
+            expect(subject.save!).to have_requested(:post, /.*#{path}/)
           end
 
           it "should send body" do
             stub_request(:post, /.*#{path}/)
               .with(body: body)
-            expect(subject.save()).to have_requested(:post, /.*#{path}/).with(body: body)
+            expect(subject.save!).to have_requested(:post, /.*#{path}/).with(body: body)
           end
         end
         context "with id set" do
           subject { klass.new(resources[:item]) }
           it "should raise an error if id is set" do
-            expect{ subject.save }.to raise_error(BitmovinError)
+            expect{ subject.save! }.to raise_error(BitmovinError)
           end
         end
       end
