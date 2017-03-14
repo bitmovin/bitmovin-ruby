@@ -76,7 +76,6 @@ describe Bitmovin::Encoding::Inputs::S3Input do
         expect(subject.cloud_region).to eq(s3_detail[:cloudRegion])
         expect(subject.description).to eq(s3_detail[:description])
         expect(subject.bucket_name).to eq(s3_detail[:bucketName])
-
       end
     end
 
@@ -89,7 +88,6 @@ describe Bitmovin::Encoding::Inputs::S3Input do
       stub_request(:delete, /.*#{"/v1/encoding/inputs/s3/7efd17bc-c94e-4c2f-93c0-1affde88fdc2"}.*/)
       end
       it "should call DELETE /v1/encoding/inputs/s3/<id>" do
-        pending('missing implementation')
         expect(subject.delete()).to have_requested(:delete, /.*#{"/v1/encoding/inputs/s3/7efd17bc-c94e-4c2f-93c0-1affde88fdc2"}.*/)
       end
     end

@@ -41,4 +41,28 @@ describe Bitmovin::Client do
       expect(subject.get('account/information', foo: :bar)).to have_requested(:get, 'https://api.bitmovin.com/v1/account/information?foo=bar')
     end
   end
+
+  describe "delete" do
+    subject { Bitmovin::Client.new({ api_key: 'test' }) }
+    it "should make DELETE http call with API key as header" do
+      stub_request(:delete, 'https://api.bitmovin.com/v1/account/information')
+        .with(headers: { 'X-Api-Key': 'test' })
+
+      expect(subject.delete('account/information')).to have_requested(:delete, 'https://api.bitmovin.com/v1/account/information')
+    end
+
+    it "should set X-Api-Client-Version to Bitmovin::VERSION" do
+      stub_request(:delete, 'https://api.bitmovin.com/v1/account/information')
+        .with(headers: { 'X-Api-Client-Version': Bitmovin::VERSION })
+
+      expect(subject.delete('account/information')).to have_requested(:delete, 'https://api.bitmovin.com/v1/account/information')
+    end
+
+    it "should set X-Api-Client to bitmovin-ruby" do
+      stub_request(:delete, 'https://api.bitmovin.com/v1/account/information')
+        .with(headers: { 'X-Api-Client': 'bitmovin-ruby' })
+
+      expect(subject.delete('account/information')).to have_requested(:delete, 'https://api.bitmovin.com/v1/account/information')
+    end
+  end
 end
