@@ -34,6 +34,12 @@ describe Bitmovin::Client do
 
       expect(subject.get('account/information')).to have_requested(:get, 'https://api.bitmovin.com/v1/account/information')
     end
+
+    it "should allow setting of parameters" do
+      stub_request(:get, 'https://api.bitmovin.com/v1/account/information?foo=bar')
+
+      expect(subject.get('account/information', foo: :bar)).to have_requested(:get, 'https://api.bitmovin.com/v1/account/information?foo=bar')
+    end
   end
 
 end
