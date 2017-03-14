@@ -41,5 +41,4 @@ describe Bitmovin::Client do
       expect(subject.get('account/information', foo: :bar)).to have_requested(:get, 'https://api.bitmovin.com/v1/account/information?foo=bar')
     end
   end
-
 end

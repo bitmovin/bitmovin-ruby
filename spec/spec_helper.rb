@@ -10,6 +10,13 @@ $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 require "webmock/rspec"
 require "pry"
 require "bitmovin"
+require "rspec"
+
+RSpec.configure do |rspec|
+  rspec.before(:all) do
+    Bitmovin.init({ api_key: 'test' })
+  end
+end
 
 def sample_list_body
   JSON.parse({
@@ -27,6 +34,14 @@ def sample_list_body
       }
     }
   }.to_json)
+end
+
+def response_envelope(children)
+  return { 
+    data: {
+      result: children
+    }
+  }
 end
 
 def sample_list_body_http

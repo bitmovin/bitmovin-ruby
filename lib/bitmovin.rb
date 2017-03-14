@@ -1,9 +1,12 @@
 require 'rubygems'
 require 'bundler/setup'
 require 'bitmovin/version'
+require 'bitmovin/helpers'
+require 'bitmovin/resource'
 require 'bitmovin/client'
 require 'bitmovin/encoding'
 require 'faraday'
+require 'active_support/core_ext/hash/indifferent_access'
 
 module Bitmovin
   @@client = nil

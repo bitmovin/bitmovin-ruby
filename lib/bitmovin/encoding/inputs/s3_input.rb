@@ -1,10 +1,8 @@
 module Bitmovin::Encoding::Inputs
-  class S3Input
+  class S3Input < Bitmovin::Resource
+    self.resource_path 'encoding/inputs/s3'
+
     def initialize(hash)
-    end
-    
-    def S3Input.list(limit = 100, offset = 0)
-      
     end
   end
 end
