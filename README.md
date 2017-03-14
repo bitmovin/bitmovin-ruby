@@ -1,6 +1,6 @@
 # Bitmovin::Ruby API Client
 [![codecov](https://codecov.io/gh/bitmovin/bitmovin-ruby/branch/develop/graph/badge.svg)](https://codecov.io/gh/bitmovin/bitmovin-ruby)
-[![Build Status](https://travis-ci.org/bitmovin/bitmovin-ruby.svg?branch=master)](https://travis-ci.org/bitmovin/bitmovin-ruby)
+[![Build Status](https://travis-ci.org/bitmovin/bitmovin-ruby.svg?branch=develop)](https://travis-ci.org/bitmovin/bitmovin-ruby)
 
 Bitmovin::Ruby API-Client which enables you to seamlessly integrate the [Bitmovin API](https://bitmovin.com/video-infrastructure-service-bitmovin-api/) into your projects.
 Using this API client requires an active account. [Sign up for a Bitmovin API key](https://bitmovin.com/bitmovins-video-api/).
