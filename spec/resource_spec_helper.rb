@@ -1,6 +1,6 @@
 require "spec_helper"
 
-def test_resource_methods(klass, path, resources, &block)
+def test_resource_methods(klass, path, resources)
   describe klass do
     describe "finder methods" do
       subject { klass }
@@ -55,9 +55,7 @@ def test_resource_methods(klass, path, resources, &block)
         it "should initialize all properties from hash" do
           expect(subject.id).to eq(resources[:item][:id])
           expect(subject.name).to eq(resources[:item][:name])
-          expect(subject.cloud_region).to eq(resources[:item][:cloudRegion])
           expect(subject.description).to eq(resources[:item][:description])
-          expect(subject.bucket_name).to eq(resources[:item][:bucketName])
         end
 
         it "can initialize new object" do
@@ -65,8 +63,8 @@ def test_resource_methods(klass, path, resources, &block)
         end
 
         it "can initialize ruby style hash" do
-          expect { klass.new({ bucket_name: 'bucket' }) }.to_not raise_error
-          expect(klass.new({ bucket_name: 'bucket' }).bucket_name).to eq('bucket')
+          expect { klass.new({ created_at: 'bucket' }) }.to_not raise_error
+          expect(klass.new({ created_at: 'bucket' }).created_at).to eq('bucket')
         end
       end
 
