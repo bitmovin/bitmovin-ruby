@@ -20,9 +20,8 @@ s3_detail = ActiveSupport::HashWithIndifferentAccess.new({
 s3_detail_response = response_envelope(s3_detail)
 
 describe Bitmovin::Encoding::Inputs::S3Input do
-  subject { Bitmovin::Encoding::Inputs::S3Input }
-
   describe "finder methods" do
+    subject { Bitmovin::Encoding::Inputs::S3Input }
     it "should respond to .list()" do
       expect(subject).to respond_to(:list).with(0..2).arguments
     end
@@ -63,6 +62,35 @@ describe Bitmovin::Encoding::Inputs::S3Input do
       it "should be initialized with correct values from response" do
         expect(Bitmovin::Encoding::Inputs::S3Input).to receive(:new).with(s3_detail)
         subject
+      end
+    end
+  end
+
+  describe "instance methods" do
+    subject { Bitmovin::Encoding::Inputs::S3Input.new(s3_detail) }
+
+    describe 'new' do
+      it "should initialize all properties from hash" do
+        expect(subject.id).to eq(s3_detail[:id])
+        expect(subject.name).to eq(s3_detail[:name])
+        expect(subject.cloud_region).to eq(s3_detail[:cloudRegion])
+        expect(subject.description).to eq(s3_detail[:description])
+        expect(subject.bucket_name).to eq(s3_detail[:bucketName])
+
+      end
+    end
+
+    it "should respond to .delete()" do
+      expect(subject).to respond_to(:delete).with(0).arguments
+    end
+
+    describe "delete()" do
+      before(:each) do
+      stub_request(:delete, /.*#{"/v1/encoding/inputs/s3/7efd17bc-c94e-4c2f-93c0-1affde88fdc2"}.*/)
+      end
+      it "should call DELETE /v1/encoding/inputs/s3/<id>" do
+        pending('missing implementation')
+        expect(subject.delete()).to have_requested(:delete, /.*#{"/v1/encoding/inputs/s3/7efd17bc-c94e-4c2f-93c0-1affde88fdc2"}.*/)
       end
     end
   end

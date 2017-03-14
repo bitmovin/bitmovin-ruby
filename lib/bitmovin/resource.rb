@@ -17,5 +17,15 @@ module Bitmovin
       response = Bitmovin.client.get File.join(@path, id)
       self.new(Bitmovin::Helpers.result(response))
     end
+
+    def initialize(hash)
+      hash.each do |name, value|
+        instance_variable_set("@#{ActiveSupport::Inflector.underscore(name)}", value)
+      end
+    end
+
+    def delete
+      Bitmovin.client.delete File.join(@path, @id)
+    end
   end
 end

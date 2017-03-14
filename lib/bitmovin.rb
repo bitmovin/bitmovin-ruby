@@ -7,6 +7,7 @@ require 'bitmovin/client'
 require 'bitmovin/encoding'
 require 'faraday'
 require 'active_support/core_ext/hash/indifferent_access'
+require 'active_support/inflector'
 
 module Bitmovin
   @@client = nil
