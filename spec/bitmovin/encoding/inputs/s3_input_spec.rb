@@ -91,5 +91,11 @@ describe Bitmovin::Encoding::Inputs::S3Input do
         expect(subject.delete()).to have_requested(:delete, /.*#{"/v1/encoding/inputs/s3/7efd17bc-c94e-4c2f-93c0-1affde88fdc2"}.*/)
       end
     end
+
+    describe "inspect" do
+      it "should output Bitmovin::Encoding::Inputs::S3Input(id, name)" do
+        expect(subject.inspect).to eq("Bitmovin::Encoding::Inputs::S3Input(id: #{s3_detail[:id]}, name: #{s3_detail[:name]})")
+      end
+    end
   end
 end

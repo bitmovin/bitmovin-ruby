@@ -27,5 +27,9 @@ module Bitmovin
     def delete
       Bitmovin.client.delete File.join(@@path, @id)
     end
+
+    def inspect
+      "#{self.class.name}(id: #{@id}, name: #{@name})"
+    end
   end
 end
