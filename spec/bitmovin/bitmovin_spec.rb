@@ -4,4 +4,19 @@ describe Bitmovin do
   it "has a version number" do
     expect(Bitmovin::VERSION).not_to be nil
   end
+
+  it "has init method" do
+    expect(Bitmovin).to respond_to(:init)
+  end
+
+  describe "init()" do
+    it "should init the client" do
+      Bitmovin.init('foo')
+      expect(Bitmovin.client).not_to be_nil
+    end
+    it "should set correct API key on client" do
+      Bitmovin.init('foo')
+      expect(Bitmovin.client.api_key).to eq('foo')
+    end
+  end
 end

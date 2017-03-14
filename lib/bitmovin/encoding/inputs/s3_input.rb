@@ -4,7 +4,7 @@ module Bitmovin::Encoding::Inputs
     end
     
     def S3Input.list(limit = 100, offset = 0)
-      []
+      
     end
   end
 end
