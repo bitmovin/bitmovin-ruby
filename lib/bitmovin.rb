@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'json'
 require 'bundler/setup'
 require 'faraday'
 require 'active_support/core_ext/hash/indifferent_access'
