@@ -59,6 +59,15 @@ def test_resource_methods(klass, path, resources, &block)
           expect(subject.description).to eq(resources[:item][:description])
           expect(subject.bucket_name).to eq(resources[:item][:bucketName])
         end
+
+        it "can initialize new object" do
+          expect{ klass.new }.to_not raise_error
+        end
+
+        it "can initialize ruby style hash" do
+          expect { klass.new({ bucket_name: 'bucket' }) }.to_not raise_error
+          expect(klass.new({ bucket_name: 'bucket' }).bucket_name).to eq('bucket')
+        end
       end
 
       it "should respond to .delete()" do
@@ -71,6 +80,36 @@ def test_resource_methods(klass, path, resources, &block)
         end
         it "should call DELETE #{path}/<id>" do
           expect(subject.delete()).to have_requested(:delete, /.*#{File.join(path, resources[:item][:id])}.*/)
+        end
+      end
+
+      it "should respond to .save()" do
+        expect(subject).to respond_to(:save).with(0).arguments
+      end
+
+      describe "save" do
+
+        context "without id set" do
+          let!(:body) do
+            dup = resources[:item].dup
+            dup.delete(:id)
+            dup
+          end
+          subject do 
+            klass.new(body)
+          end
+
+          it "should call POST #{path}" do
+            stub_request(:post, /.*#{path}/)
+              .with(body: body)
+            expect(subject.save()).to have_requested(:post, /.*#{path}/).with(body: body)
+          end
+        end
+        context "with id set" do
+          subject { klass.new(resources[:item]) }
+          it "should raise an error if id is set" do
+            expect{ subject.save }.to raise_error(BitmovinError)
+          end
         end
       end
 

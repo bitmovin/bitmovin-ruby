@@ -23,11 +23,23 @@ module Bitmovin
     end
 
 
-    def initialize(hash)
+    def initialize(hash = {})
       hash.each do |name, value|
         instance_variable_set("@#{ActiveSupport::Inflector.underscore(name)}", value)
       end
     end
+
+    def save
+      if @id
+        raise BitmovinError.new(self), "Cannot save already persisted resource"
+      end
+
+      Bitmovin.client.post do |post|
+        post.url self.class.resource_path
+        post.body = collect_attributes
+      end
+    end
+
 
     def delete
       Bitmovin.client.delete File.join(self.class.resource_path, @id)
@@ -35,6 +47,17 @@ module Bitmovin
 
     def inspect
       "#{self.class.name}(id: #{@id}, name: #{@name})"
+    end
+
+    private
+
+    def collect_attributes
+      val = Hash.new
+      instance_variables.each do |name|
+        json_name = ActiveSupport::Inflector.camelize(name.to_s.gsub(/@/, ''), false)
+        val[json_name] = instance_variable_get(name)
+      end
+      val
     end
   end
 end

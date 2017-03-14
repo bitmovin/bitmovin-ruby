@@ -6,6 +6,7 @@ require 'active_support/core_ext/hash/indifferent_access'
 require 'active_support/inflector'
 
 require 'bitmovin/version'
+require 'bitmovin/bitmovin_error'
 require 'bitmovin/helpers'
 require 'bitmovin/resource'
 require 'bitmovin/client'
