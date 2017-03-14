@@ -2,21 +2,26 @@ module Bitmovin
   class Resource
     include Bitmovin::Helpers
 
-    def self.resource_path(path)
-      @@path = path
-    end
+    class << self
+      def init(path)
+        @resource_path = path
+      end
+      attr_reader :resource_path
 
-    def self.list(limit = 100, offset = 0)
-      response = Bitmovin.client.get @@path, limit: limit, offset: offset
-      Bitmovin::Helpers.result(response)['items'].map do |item|
-        self.new(item)
+
+      def list(limit = 100, offset = 0)
+        response = Bitmovin.client.get @resource_path, limit: limit, offset: offset
+        Bitmovin::Helpers.result(response)['items'].map do |item|
+          new(item)
+        end
+      end
+
+      def find(id)
+        response = Bitmovin.client.get File.join(@resource_path, id)
+        new(Bitmovin::Helpers.result(response))
       end
     end
 
-    def self.find(id)
-      response = Bitmovin.client.get File.join(@@path, id)
-      self.new(Bitmovin::Helpers.result(response))
-    end
 
     def initialize(hash)
       hash.each do |name, value|
@@ -25,7 +30,7 @@ module Bitmovin
     end
 
     def delete
-      Bitmovin.client.delete File.join(@@path, @id)
+      Bitmovin.client.delete File.join(self.class.resource_path, @id)
     end
 
     def inspect

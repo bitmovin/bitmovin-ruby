@@ -3,3 +3,4 @@ module Bitmovin
   end
 end
 require 'bitmovin/encoding/inputs'
+require 'bitmovin/encoding/outputs'
