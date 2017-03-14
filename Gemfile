@@ -5,6 +5,7 @@ group :development do
    gem 'webmock'
    gem 'pry'
    gem 'simplecov'
+   gem 'codecov', :require => false, :group => :test
 end
 
 # Specify your gem's dependencies in bitmovin-ruby.gemspec
