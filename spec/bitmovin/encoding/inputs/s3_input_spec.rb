@@ -1,5 +1,6 @@
 require "spec_helper"
 require "resource_spec_helper"
+require "analyze_spec_helper"
 
 s3_list_response = response_envelope({
   items: [{
@@ -25,3 +26,4 @@ test_resource_methods(Bitmovin::Encoding::Inputs::S3Input, "/v1/encoding/inputs/
   detail: s3_detail_response,
   item: s3_detail
 })
+test_analyze_method(Bitmovin::Encoding::Inputs::S3Input, "/v1/encoding/inputs/s3")

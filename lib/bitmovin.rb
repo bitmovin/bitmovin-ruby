@@ -9,6 +9,7 @@ require 'bitmovin/version'
 require 'bitmovin/bitmovin_error'
 require 'bitmovin/helpers'
 require 'bitmovin/resource'
+require 'bitmovin/input_resource'
 require 'bitmovin/client'
 require 'bitmovin/encoding'
 
