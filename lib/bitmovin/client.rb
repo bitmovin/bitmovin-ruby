@@ -22,5 +22,9 @@ module Bitmovin
     def delete(*args, &block)
       @conn.delete *args, &block
     end
+
+    def post(*args, &block)
+      @conn.post *args, &block
+    end
   end
 end
