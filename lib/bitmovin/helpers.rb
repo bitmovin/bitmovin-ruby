@@ -16,6 +16,10 @@ module Bitmovin::Helpers
   end
 
   def underscore_hash(hash)
+    if !hash.instance_of? Hash
+      return hash
+    end
+
     ret = Hash.new
     hash.each do |key, value|
       if value.instance_of?(Hash)
@@ -32,6 +36,10 @@ module Bitmovin::Helpers
   end
 
   def hash_to_struct(hash)
+    if !hash.instance_of? Hash
+      return hash
+    end
+
     ret = Hash.new
     hash.each do |key, value|
       if value.instance_of?(Hash)
