@@ -8,5 +8,8 @@ module Bitmovin::Encoding::Encodings
       @resource_path = File.join("/v1/encoding/encodings/", encoding_id, "streams")
       super(hash)
     end
+
+    attr_accessor :name, :description, :created_at, :modified_at
+    attr_accessor :codec_config_id
   end
 end
