@@ -42,7 +42,7 @@ module Bitmovin
     end
 
 
-    def delete
+    def delete!
       Bitmovin.client.delete File.join(self.class.resource_path, @id)
     end
 

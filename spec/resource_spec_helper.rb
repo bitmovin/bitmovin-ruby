@@ -68,16 +68,16 @@ def test_resource_methods(klass, path, resources)
         end
       end
 
-      it "should respond to .delete()" do
-        expect(subject).to respond_to(:delete).with(0).arguments
+      it "should respond to .delete!" do
+        expect(subject).to respond_to(:delete!).with(0).arguments
       end
 
-      describe "delete()" do
+      describe "delete!()" do
         before(:each) do
           stub_request(:delete, /.*#{File.join(path, resources[:item][:id])}.*/)
         end
         it "should call DELETE #{path}/<id>" do
-          expect(subject.delete()).to have_requested(:delete, /.*#{File.join(path, resources[:item][:id])}.*/)
+          expect(subject.delete!).to have_requested(:delete, /.*#{File.join(path, resources[:item][:id])}.*/)
         end
       end
 
