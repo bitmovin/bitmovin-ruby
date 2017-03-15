@@ -9,6 +9,7 @@ describe Bitmovin::Encoding::CodecConfigurations do
         items: [
           {
             type: 'h264',
+            id: SecureRandom.hex,
             name: 'test',
             description: 'desc',
             width: 100,
@@ -26,6 +27,24 @@ describe Bitmovin::Encoding::CodecConfigurations do
             maxBitrate: 0,
             minBitrate: 0,
             bufsize: 0
+          },
+          {
+            type: 'aac',
+            id: SecureRandom.hex,
+            name: 'test',
+            description: 'desc'
+          },
+          {
+            type: 'h265',
+            id: SecureRandom.hex,
+            name: 'test',
+            description: 'desc'
+          },
+          {
+            type: 'vp9',
+            id: SecureRandom.hex,
+            name: 'test',
+            description: 'desc'
           }
         ]
       })
@@ -47,10 +66,25 @@ describe Bitmovin::Encoding::CodecConfigurations do
       response = subject.list()
       expect(response).to include(be_a(Bitmovin::Encoding::CodecConfigurations::H264Configuration))
     end
+    it "should return a list including Bitmovin::Encoding::CodecConfigurations::H265Configuration" do
+      stub_request(:get, url).to_return(body: sample_list_body.to_json)
+      response = subject.list()
+      expect(response).to include(be_a(Bitmovin::Encoding::CodecConfigurations::H265Configuration))
+    end
+    it "should return a list including Bitmovin::Encoding::CodecConfigurations::AacConfiguration" do
+      stub_request(:get, url).to_return(body: sample_list_body.to_json)
+      response = subject.list()
+      expect(response).to include(be_a(Bitmovin::Encoding::CodecConfigurations::AacConfiguration))
+    end
+    it "should return a list including Bitmovin::Encoding::CodecConfigurations::Vp9Configuration" do
+      stub_request(:get, url).to_return(body: sample_list_body.to_json)
+      response = subject.list()
+      expect(response).to include(be_a(Bitmovin::Encoding::CodecConfigurations::Vp9Configuration))
+    end
     it "should return list with correct size" do
       stub_request(:get, url).to_return(body: sample_list_body.to_json)
       response = subject.list()
-      expect(response.size).to eq(1)
+      expect(response.size).to eq(4)
     end
   end
 end
