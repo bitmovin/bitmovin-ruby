@@ -24,7 +24,9 @@ module Bitmovin::Helpers
       if (value.instance_of?(Array))
         value = value.map { |v| underscore_hash(v) }
       end
-      ret[ActiveSupport::Inflector.underscore(key)] = value
+      new_key = ActiveSupport::Inflector.underscore(key)
+      new_key = new_key.to_sym if key.instance_of? Symbol
+      ret[new_key] = value
     end
     ret
   end
