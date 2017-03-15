@@ -28,5 +28,158 @@ describe Bitmovin::Encoding::Inputs::Analysis do
     it "should return input" do
       expect(subject.input).to eq(input)
     end
+
+    it "should respond to status" do
+      expect(subject).to respond_to(:status)
+    end
+
+    describe "status?" do
+      let(:status) { "RUNNING" }
+      before(:each) do
+        stub_request(:get, /.*#{"/v1/encoding/inputs/test/analysis/analysis-id/status"}/)
+          .to_return(body: response_envelope({
+            analysis: {
+              status: status,
+              eta: 67,
+              progress: 36
+            }
+        }).to_json)
+      end
+      it "should call GET /v1/encoding/inputs/<input_id>/analysis/<analysis_id>/status" do
+        expect(subject.status).to have_requested(:get, /.*#{"/v1/encoding/inputs/test/analysis/analysis-id/status"}/)
+      end
+      it "should return status as object" do
+        expect(subject.status).to be_a(Object)
+        expect(subject.status).to respond_to(:status)
+        expect(subject.status).to respond_to(:eta)
+        expect(subject.status).to respond_to(:progress)
+      end
+
+      it "should cache status for 5 seconds" do
+        expect(Bitmovin.client).to receive(:get).and_call_original
+        subject.status
+        subject.status
+      end
+
+      it { should respond_to(:created?) }
+      it { should respond_to(:queued?) }
+      it { should respond_to(:running?) }
+      it { should respond_to(:finished?) }
+      it { should respond_to(:error?) }
+      it { should respond_to(:eta?) }
+      it { should respond_to(:progress?) }
+
+      describe "status is CREATED" do
+        let(:status) { "CREATED" }
+
+        it "created? should return true" do
+          expect(subject.created?).to eq(true)
+        end
+        it "queued? should return false" do
+          expect(subject.queued?).to eq(false)
+        end
+        it "running? should return false" do
+          expect(subject.running?).to eq(false)
+        end
+        it "finished? should return false" do
+          expect(subject.finished?).to eq(false)
+        end
+        it "error? should return false" do
+          expect(subject.error?).to eq(false)
+        end
+      end
+
+      describe "status is QUEUED" do
+        let(:status) { "QUEUED" }
+
+        it "created? should return false" do
+          expect(subject.created?).to eq(false)
+        end
+        it "queued? should return true" do
+          expect(subject.queued?).to eq(true)
+        end
+        it "running? should return false" do
+          expect(subject.running?).to eq(false)
+        end
+        it "finished? should return false" do
+          expect(subject.finished?).to eq(false)
+        end
+        it "error? should return false" do
+          expect(subject.error?).to eq(false)
+        end
+      end
+
+      describe "status is RUNNING" do
+        let(:status) { "RUNNING" }
+
+        it "created? should return false" do
+          expect(subject.created?).to eq(false)
+        end
+        it "queued? should return false" do
+          expect(subject.queued?).to eq(false)
+        end
+        it "running? should return true" do
+          expect(subject.running?).to eq(true)
+        end
+        it "finished? should return false" do
+          expect(subject.finished?).to eq(false)
+        end
+        it "error? should return false" do
+          expect(subject.error?).to eq(false)
+        end
+      end
+
+      describe "status is FINISHED" do
+        let(:status) { "FINISHED" }
+
+        it "created? should return false" do
+          expect(subject.created?).to eq(false)
+        end
+        it "queued? should return false" do
+          expect(subject.queued?).to eq(false)
+        end
+        it "running? should return false" do
+          expect(subject.running?).to eq(false)
+        end
+        it "finished? should return true" do
+          expect(subject.finished?).to eq(true)
+        end
+        it "error? should return false" do
+          expect(subject.error?).to eq(false)
+        end
+      end
+
+      describe "status is ERROR" do
+        let(:status) { "ERROR" }
+
+        it "created? should return false" do
+          expect(subject.created?).to eq(false)
+        end
+        it "queued? should return false" do
+          expect(subject.queued?).to eq(false)
+        end
+        it "running? should return false" do
+          expect(subject.running?).to eq(false)
+        end
+        it "finished? should return false" do
+          expect(subject.finished?).to eq(false)
+        end
+        it "error? should return true" do
+          expect(subject.error?).to eq(true)
+        end
+      end
+
+      describe "eta?" do
+        it "should return number from status call" do
+          expect(subject.eta?).to eq(67)
+        end
+      end
+      describe "progress?" do
+        it "should return number from status call" do
+          expect(subject.progress?).to eq(36)
+        end
+      end
+    end
   end
+
 end
