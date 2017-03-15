@@ -7,3 +7,4 @@ module Bitmovin::Encoding
   end
 end
 require 'bitmovin/encoding/encodings/encoding_task'
+require 'bitmovin/encoding/encodings/stream_list'

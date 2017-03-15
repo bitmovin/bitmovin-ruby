@@ -37,6 +37,7 @@ describe Bitmovin::Encoding::Encodings::EncodingTask do
 
   describe "instance" do
     subject { Bitmovin::Encoding::Encodings::EncodingTask.new(encoding) }
+    it { should respond_to(:id) }
     it { should respond_to(:name) }
     it { should respond_to(:description) }
     it { should respond_to(:encoder_version) }
@@ -50,6 +51,8 @@ describe Bitmovin::Encoding::Encodings::EncodingTask do
     it { should respond_to(:live?) }
     it { should respond_to(:vod?) }
 
+    it { should respond_to(:streams) }
+
     it "vod? should return true if type is vod" do
       subject.type = "VOD"
       expect(subject.vod?).to be_truthy
@@ -59,6 +62,11 @@ describe Bitmovin::Encoding::Encodings::EncodingTask do
       subject.type = "LIVE"
       expect(subject.live?).to be_truthy
       expect(subject.vod?).to be_falsy
+    end
+
+    it "streams should return a StreamList" do
+      expect(subject.streams).to be_a(Bitmovin::Encoding::Encodings::StreamList)
+      expect(subject.streams.encoding_id).to eq(subject.id)
     end
   end
 
