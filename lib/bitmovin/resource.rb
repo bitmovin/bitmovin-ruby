@@ -55,8 +55,12 @@ module Bitmovin
     def collect_attributes
       val = Hash.new
       instance_variables.each do |name|
-        json_name = ActiveSupport::Inflector.camelize(name.to_s.gsub(/@/, ''), false)
-        val[json_name] = instance_variable_get(name)
+        if name == :@max_ctu_size
+          val['maxCTUSize'] = instance_variable_get(name)
+        else
+          json_name = ActiveSupport::Inflector.camelize(name.to_s.gsub(/@/, ''), false)
+          val[json_name] = instance_variable_get(name)
+        end
       end
       val
     end
