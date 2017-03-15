@@ -2,6 +2,7 @@ require 'rubygems'
 require 'json'
 require 'bundler/setup'
 require 'faraday'
+require 'securerandom'
 require 'active_support/core_ext/hash/indifferent_access'
 require 'active_support/inflector'
 

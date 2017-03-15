@@ -1,11 +1,20 @@
 module Bitmovin
   class InputResource < Resource
     def analyze!(options)
-      response = Bitmovin.client.post(File.join(self.class.resource_path, @id, 'analysis')) do |req|
+      path = File.join("/v1/encoding/inputs/", @id, "analysis")
+      response = Bitmovin.client.post(path) do |req|
         req.body = camelize_hash(options)
       end
       result = (JSON.parse(response.body))['data']['result']
       Bitmovin::Encoding::Inputs::Analysis.new(self, result['id'])
+    end
+
+    def analyses(limit = 100, offset = 0)
+      path = File.join("/v1/encoding/inputs/", @id, "analysis")
+      response = Bitmovin.client.get(path)
+      JSON.parse(response.body)['data']['result'].map do |result|
+        hash_to_struct(underscore_hash(result))
+      end
     end
   end
 end
