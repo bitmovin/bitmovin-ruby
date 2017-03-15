@@ -60,5 +60,14 @@ module Bitmovin::Encoding::Inputs
     def progress?
       status.progress
     end
+
+    # Returns the analysis result
+    # Will raise and error if analysis is not yet finished
+    def result
+      if !finished?
+        raise BitmovinError.new(self), "analysis is not finished yet"
+      end
+      Analysis.new(@input_id).find(@id)
+    end
   end
 end

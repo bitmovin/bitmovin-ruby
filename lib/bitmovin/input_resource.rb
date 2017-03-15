@@ -9,12 +9,8 @@ module Bitmovin
       Bitmovin::Encoding::Inputs::AnalysisTask.new(self, result['id'])
     end
 
-    def analyses(limit = 100, offset = 0)
-      path = File.join("/v1/encoding/inputs/", @id, "analysis")
-      response = Bitmovin.client.get(path)
-      JSON.parse(response.body)['data']['result'].map do |result|
-        hash_to_struct(underscore_hash(result))
-      end
+    def analyses
+      Encoding::Inputs::Analysis.new(@id)
     end
   end
 end

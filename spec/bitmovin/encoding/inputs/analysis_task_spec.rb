@@ -34,7 +34,7 @@ describe Bitmovin::Encoding::Inputs::AnalysisTask do
       expect(subject).to respond_to(:status)
     end
 
-    describe "status?" do
+    describe "status call" do
       let(:status) { "RUNNING" }
       before(:each) do
         stub_request(:get, /.*#{"/v1/encoding/inputs/test/analysis/analysis-id/status"}/)
@@ -182,8 +182,20 @@ describe Bitmovin::Encoding::Inputs::AnalysisTask do
       end
 
       describe "result" do
-        it "should raise error if status is not FINISHED" do
-          expect { subject.result }.to raise_error(BitmovinError)
+        context "status is queued" do
+          let(:status) { "QUEUED" }
+          it "should raise error if status is not FINISHED" do
+            expect { subject.result }.to raise_error(BitmovinError)
+          end
+        end
+        context "with finished status" do
+          let(:status) { "FINISHED" }
+          it "should return analysis detail" do
+            analysis_double = instance_double("Analysis")
+            expect(Bitmovin::Encoding::Inputs::Analysis).to receive(:new).with(input.id).and_return(analysis_double)
+            expect(analysis_double).to receive(:find).with(subject.id).and_return('foo')
+            expect(subject.result).to eq('foo')
+          end
         end
       end
     end
