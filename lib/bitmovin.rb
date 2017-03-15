@@ -11,6 +11,7 @@ require 'bitmovin/bitmovin_error'
 require 'bitmovin/helpers'
 require 'bitmovin/resource'
 require 'bitmovin/input_resource'
+require 'bitmovin/configuration_resource'
 require 'bitmovin/client'
 require 'bitmovin/encoding'
 
