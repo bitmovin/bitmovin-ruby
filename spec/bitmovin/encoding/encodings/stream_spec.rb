@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe Bitmovin::Encoding::Encodings::Stream do
-  let(:stream) {
+  let(:stream_json) {
     {
       name: "Production-ID-678",
       description: "Project ID: 567",
@@ -30,7 +30,8 @@ describe Bitmovin::Encoding::Encodings::Stream do
     }
   }
 
-  subject { Bitmovin::Encoding::Encodings::Stream.new('encoding-id', stream) }
+  let(:stream) { Bitmovin::Encoding::Encodings::Stream.new('encoding-id', stream_json) }
+  subject { stream }
   it { should respond_to(:id) }
   it { should respond_to(:encoding_id) }
   it { should respond_to(:name) }
@@ -45,6 +46,23 @@ describe Bitmovin::Encoding::Encodings::Stream do
   
   it { should respond_to(:input_streams) }
   it { should respond_to(:outputs) }
+  it { should respond_to(:outputs) }
   it { should respond_to(:codec_configuration) }
   it { should respond_to(:codec_configuration=).with(1).argument }
+
+  describe "outputs" do
+    subject { stream.outputs }
+    it "should return an Array" do
+      expect(subject).to be_a(Array)
+    end
+    it "should return an Array of StreamOutput" do
+      expect(subject.first).to be_a(Bitmovin::Encoding::Encodings::StreamOutput)
+    end
+    it "should return an Array of StreamOutput with correct encoding_id" do
+      expect(subject.first.encoding_id).to eq(stream.encoding_id)
+    end
+    it "should return an Array of StreamOutput with correct stream_id" do
+      expect(subject.first.stream_id).to eq(stream.id)
+    end
+  end
 end
