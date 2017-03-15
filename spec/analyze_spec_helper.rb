@@ -20,7 +20,7 @@ def test_analyze_method(klass, path)
       end
 
       it "should return analysis object" do
-        expect(subject.analyze!({ path: '/path/to/mediafile.mp4', cloud_region: 'AWS_EU_WEST_1' })).to be_a(Bitmovin::Encoding::Inputs::Analysis)
+        expect(subject.analyze!({ path: '/path/to/mediafile.mp4', cloud_region: 'AWS_EU_WEST_1' })).to be_a(Bitmovin::Encoding::Inputs::AnalysisTask)
       end
     end
 

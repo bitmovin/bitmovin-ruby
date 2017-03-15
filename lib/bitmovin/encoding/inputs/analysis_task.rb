@@ -1,5 +1,5 @@
 module Bitmovin::Encoding::Inputs
-  class Analysis
+  class AnalysisTask
     # Creates a new Analysis object
     # == Parameters:
     # input::

@@ -1,10 +1,11 @@
 require "spec_helper"
 
-describe Bitmovin::Encoding::Inputs::Analysis do
-  subject { Bitmovin::Encoding::Inputs::Analysis.new('input-id', 'analysis-id') }
+describe Bitmovin::Encoding::Inputs::AnalysisTask do
+  subject { Bitmovin::Encoding::Inputs::AnalysisTask.new('input-id', 'analysis-id') }
 
   it { should respond_to(:input_id) }
   it { should respond_to(:id) }
+  it { should respond_to(:result) }
   it "should return given input_id" do
     expect(subject.input_id).to eq('input-id')
   end
@@ -15,7 +16,7 @@ describe Bitmovin::Encoding::Inputs::Analysis do
 
   context "given an input object" do
     let(:input) { Bitmovin::Encoding::Inputs::S3Input.new(id: 'test') }
-    subject { Bitmovin::Encoding::Inputs::Analysis.new(input, 'analysis-id') }
+    subject { Bitmovin::Encoding::Inputs::AnalysisTask.new(input, 'analysis-id') }
 
     it 'should set input-id from input object' do
       expect(subject.input_id).to eq(input.id)
@@ -177,6 +178,12 @@ describe Bitmovin::Encoding::Inputs::Analysis do
       describe "progress?" do
         it "should return number from status call" do
           expect(subject.progress?).to eq(36)
+        end
+      end
+
+      describe "result" do
+        it "should raise error if status is not FINISHED" do
+          expect { subject.result }.to raise_error(BitmovinError)
         end
       end
     end

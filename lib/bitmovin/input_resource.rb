@@ -6,7 +6,7 @@ module Bitmovin
         req.body = camelize_hash(options)
       end
       result = (JSON.parse(response.body))['data']['result']
-      Bitmovin::Encoding::Inputs::Analysis.new(self, result['id'])
+      Bitmovin::Encoding::Inputs::AnalysisTask.new(self, result['id'])
     end
 
     def analyses(limit = 100, offset = 0)
