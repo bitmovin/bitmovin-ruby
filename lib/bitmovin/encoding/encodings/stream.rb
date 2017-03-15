@@ -11,5 +11,16 @@ module Bitmovin::Encoding::Encodings
 
     attr_accessor :name, :description, :created_at, :modified_at
     attr_accessor :codec_config_id
+
+    def input_streams
+    end
+
+    def outputs
+    end
+
+    def codec_configuration=(configuration)
+    end
+    def codec_configuration
+    end
   end
 end

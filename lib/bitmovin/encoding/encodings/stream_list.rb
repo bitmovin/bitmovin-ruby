@@ -14,12 +14,15 @@ module Bitmovin::Encoding::Encodings
     end
 
     def add(stream)
+      # TODO
     end
 
     def build
+      # TODO
     end
 
     def find(id)
+      # TODO
     end
   end
 end
