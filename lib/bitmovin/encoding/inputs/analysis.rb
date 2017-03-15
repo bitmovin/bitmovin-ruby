@@ -8,7 +8,7 @@ module Bitmovin::Encoding::Inputs
     def list(limit = 100, offset = 0)
       path = File.join("/v1/encoding/inputs/", @id, "analysis")
       response = Bitmovin.client.get(path, limit: limit, offset: offset)
-      JSON.parse(response.body)['data']['result'].map do |result|
+      result(response).map do |result|
         subtask_hash_to_object(result)
       end
     end
@@ -16,7 +16,7 @@ module Bitmovin::Encoding::Inputs
     def find(id)
       path = File.join("/v1/encoding/inputs", @id, "analysis", id)
       response = Bitmovin.client.get(path)
-      subtask_hash_to_object(JSON.parse(response.body)['data']['result'])
+      subtask_hash_to_object(result(response))
     end
 
     private
