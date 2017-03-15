@@ -9,8 +9,11 @@ module Bitmovin
       @conn = Faraday.new(url: @base_url, headers: {
           'X-Api-Key' => @api_key,
           'X-Api-Client-Version' => Bitmovin::VERSION,
-          'X-Api-Client' => 'bitmovin-ruby'
+          'X-Api-Client' => 'bitmovin-ruby',
+          'Content-Type' => 'application/json'
         }) do |faraday|
+
+        faraday.request :json
         faraday.adapter :httpclient
       end
     end
