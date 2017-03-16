@@ -67,6 +67,15 @@ module Bitmovin::Encoding::Encodings
     end
 
     private
+    def collect_attributes
+      val = Hash.new
+      [:name, :description, :create_quality_meta_data,
+      :input_streams, :outputs, :codec_config_id].each do |name|
+        json_name = ActiveSupport::Inflector.camelize(name.to_s, false)
+        val[json_name] = instance_variable_get("@#{name}")
+      end
+      val
+    end
     def validate!
       @errors = []
       if @input_streams.empty?

@@ -288,15 +288,21 @@ describe Bitmovin::Encoding::Encodings::Stream do
       expect(subject).to receive(:valid?)
       subject.save!
     end
+    let(:body) do
+      stream_json.delete(:id)
+      stream_json.delete(:modifiedAt)
+      stream_json.delete(:createdAt)
+      expected_body = stream_json
+      expected_body
+    end
     before(:each) do
       stub_request(:post, /.*#{"/v1/encoding/encodings/#{stream.encoding_id}/streams"}/)
+        .with(body: body)
     end
 
     it "should call POST /v1/encoding/encodings/<encoding-id>/streams" do
       subject.id = nil
-      stream_json.delete(:id)
-      expected_body = stream_json
-      expect(subject.save!).to have_requested(:post, /.*#{"/v1/encoding/encodings/#{stream.encoding_id}/streams"}/).with(body: expected_body)
+      expect(subject.save!).to have_requested(:post, /.*#{"/v1/encoding/encodings/#{stream.encoding_id}/streams"}/).with(body: body)
     end
   end
 end
