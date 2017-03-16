@@ -1,5 +1,5 @@
 module Bitmovin::Encoding::Encodings
-  class StreamOutput < Bitmovin::Resource
+  class StreamInput
     def initialize(encoding_id, stream_id, hash)
       @encoding_id = encoding_id
       @stream_id = stream_id
@@ -9,6 +9,6 @@ module Bitmovin::Encoding::Encodings
     end
 
     attr_accessor :encoding_id, :stream_id
-    attr_accessor :output_id, :output_path, :acl
+    attr_accessor :input_id, :input_path, :selection_mode, :position
   end
 end

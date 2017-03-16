@@ -45,10 +45,12 @@ describe Bitmovin::Encoding::Encodings::Stream do
 
   
   it { should respond_to(:input_streams) }
+  it { should respond_to(:build_input_stream).with(0..1).argument }
   it { should respond_to(:outputs) }
   it { should respond_to(:outputs) }
   it { should respond_to(:codec_configuration) }
   it { should respond_to(:codec_configuration=).with(1).argument }
+  it { should respond_to(:build_output).with(0..1).argument }
 
   describe "outputs" do
     subject { stream.outputs }
@@ -63,6 +65,66 @@ describe Bitmovin::Encoding::Encodings::Stream do
     end
     it "should return an Array of StreamOutput with correct stream_id" do
       expect(subject.first.stream_id).to eq(stream.id)
+    end
+
+    it "should allow setting of StreamOutput" do
+      #subject.outputs << stream.
+    end
+  end
+
+  describe "build_output" do
+    subject { stream.build_output(output_id: 'output') }
+    it "should return a StreamOutput" do
+      expect(subject).to be_a(Bitmovin::Encoding::Encodings::StreamOutput)
+    end
+
+    it "should return a StreamOutput with correct encoding_id" do
+      expect(subject.encoding_id).to eq(stream.encoding_id)
+    end
+    
+    it "should return a StreamOutput with correct stream_id" do
+      expect(subject.stream_id).to eq(stream.id)
+    end
+
+    it "should return a StreamOutput initialized from parameter hash" do
+      expect(subject.output_id).to eq('output')
+    end
+
+    it "should be automatically be added to outputs array of Stream" do
+      expect(stream.outputs).to include(subject)
+    end
+
+    it "should be a reference" do
+      subject.output_path = "test"
+      expect(stream.outputs).to include(have_attributes(output_path: "test"))
+    end
+  end
+
+  describe "build_input_stream" do
+    subject { stream.build_input_stream(input_id: 'input', input_path: '/var/www.mp4') }
+    it "should return a StreamInput" do
+      expect(subject).to be_a(Bitmovin::Encoding::Encodings::StreamInput)
+    end
+
+    it "should return a StreamInput with correct encoding_id" do
+      expect(subject.encoding_id).to eq(stream.encoding_id)
+    end
+    
+    it "should return a StreamInput with correct stream_id" do
+      expect(subject.stream_id).to eq(stream.id)
+    end
+
+    it "should return a StreamInput initialized from parameter hash" do
+      expect(subject.input_id).to eq('input')
+    end
+
+    it "should be automatically be added to outputs array of Stream" do
+      expect(stream.input_streams).to include(subject)
+    end
+
+    it "should be a reference" do
+      subject.input_path = "test"
+      expect(stream.input_streams).to include(have_attributes(input_path: "test"))
     end
   end
 end
