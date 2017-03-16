@@ -12,8 +12,7 @@ module Bitmovin::Encoding::Encodings
       @input_streams = hsh[:input_streams].map { |input| StreamInput.new(@encoding_id, @id, input) }
     end
 
-    attr_accessor :name, :description, :created_at, :modified_at
-    attr_accessor :codec_config_id
+    attr_accessor :name, :description, :created_at, :modified_at, :create_quality_meta_data
 
     def input_streams
       @input_streams
@@ -36,8 +35,14 @@ module Bitmovin::Encoding::Encodings
     end
 
     def codec_configuration=(configuration)
+      if configuration.instance_of?(String)
+        @codec_config_id = configuration
+      else
+        @codec_config_id = configuration.id
+      end
     end
     def codec_configuration
+      @codec_config_id
     end
   end
 end

@@ -11,6 +11,7 @@ require "webmock/rspec"
 require "pry"
 require "bitmovin"
 require "rspec"
+require "rspec/collection_matchers"
 
 RSpec.configure do |rspec|
   rspec.before(:all) do

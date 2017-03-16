@@ -6,6 +6,7 @@ group :development do
    gem 'pry'
    gem 'simplecov'
    gem 'codecov', :require => false, :group => :test
+   gem 'rspec-collection_matchers'
 end
 
 # Specify your gem's dependencies in bitmovin-ruby.gemspec

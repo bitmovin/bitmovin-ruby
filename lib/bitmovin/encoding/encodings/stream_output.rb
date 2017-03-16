@@ -1,5 +1,5 @@
 module Bitmovin::Encoding::Encodings
-  class StreamOutput < Bitmovin::Resource
+  class StreamOutput
     def initialize(encoding_id, stream_id, hash)
       @encoding_id = encoding_id
       @stream_id = stream_id
