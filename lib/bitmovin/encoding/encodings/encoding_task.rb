@@ -2,6 +2,11 @@ module Bitmovin::Encoding::Encodings
   class EncodingTask < Bitmovin::Resource
     init "/v1/encoding/encodings"
 
+    def initialize(hash = {})
+      super(hash)
+      @stream_list = StreamList.new(@id)
+    end
+
     attr_accessor :id, :name, :description
     attr_reader :created_at, :modified_at
     attr_accessor :encoder_version, :cloud_region, :infrastructure_id, :status, :created_at, :modified_at, :type
@@ -15,7 +20,11 @@ module Bitmovin::Encoding::Encodings
     end
 
     def streams
-      StreamList.new(@id)
+      @stream_list
+    end
+
+    def ignore_fields
+      [:@stream_list]
     end
 
     def self.list(limit = 100, offset = 0)

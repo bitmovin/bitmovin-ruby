@@ -54,7 +54,14 @@ module Bitmovin
 
     def collect_attributes
       val = Hash.new
+      ignored_variables = []
+      if (self.respond_to?(:ignore_fields))
+        ignored_variables = self.ignore_fields
+      end
       instance_variables.each do |name|
+        if ignored_variables.include?(name)
+          next
+        end
         if name == :@max_ctu_size
           val['maxCTUSize'] = instance_variable_get(name)
         else
