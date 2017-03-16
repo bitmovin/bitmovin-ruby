@@ -3,13 +3,15 @@ module Bitmovin::Encoding::Encodings
     attr_accessor :encoding_id
     attr_accessor :id
 
-    def initialize(encoding_id, hash)
+    def initialize(encoding_id, hash = {})
       hsh = ActiveSupport::HashWithIndifferentAccess.new(underscore_hash(hash))
       @encoding_id = encoding_id
       @resource_path = File.join("/v1/encoding/encodings/", encoding_id, "streams")
       super(hash)
-      @outputs = hsh[:outputs].map { |output| StreamOutput.new(@encoding_id, @id, output) }
-      @input_streams = hsh[:input_streams].map { |input| StreamInput.new(@encoding_id, @id, input) }
+      @outputs = (hsh[:outputs] || []).map { |output| StreamOutput.new(@encoding_id, @id, output) }
+      @input_streams = (hsh[:input_streams] || []).map { |input| StreamInput.new(@encoding_id, @id, input) }
+
+      @errors = []
     end
 
     attr_accessor :name, :description, :created_at, :modified_at, :create_quality_meta_data
@@ -43,6 +45,42 @@ module Bitmovin::Encoding::Encodings
     end
     def codec_configuration
       @codec_config_id
+    end
+
+    def save!
+      valid?
+    end
+
+    def valid?
+      validate!
+      @errors.empty?
+    end
+
+    def invalid?
+      !valid?
+    end
+
+    def errors
+      @errors
+    end
+
+    private
+    def validate!
+      @errors = []
+      if @input_streams.empty?
+        @errors << "Stream needs at least one input_stream"
+      end
+      @input_streams.each do |stream|
+        @errors << stream.errors if !stream.valid?
+      end
+
+      @outputs.each do |output|
+        @errors << output.errors if !output.valid?
+      end
+
+      @errors << "codec_configuration must be set" if @codec_config_id.blank?
+
+      @errors.flatten!
     end
   end
 end

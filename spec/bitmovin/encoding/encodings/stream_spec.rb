@@ -67,6 +67,12 @@ describe Bitmovin::Encoding::Encodings::Stream do
       expect(subject).to have_exactly(1).input_streams
       expect(subject.input_streams).to include(have_attributes(input_id: "47c3e8a3-ab76-46f5-8b07-cd2e2b0c3728")) 
     end
+
+    context "without hash" do
+      subject  { Bitmovin::Encoding::Encodings::Stream.new('encoding-id') }
+      it { is_expected.to have(0).input_streams }
+      it { is_expected.to have(0).outputs }
+    end
   end
 
   describe "outputs" do
@@ -170,6 +176,100 @@ describe Bitmovin::Encoding::Encodings::Stream do
     end
     it "should accept a codec configuration id as parameter" do
       expect { subject.codec_configuration = 'codec-id' }.to change{ subject.codec_configuration }.to('codec-id')
+    end
+  end
+
+  it { should respond_to(:save!) }
+  it { should respond_to(:valid?) }
+  it { should respond_to(:invalid?) }
+  it { should respond_to(:errors) }
+
+  describe "save!" do
+    context "without input_streams" do
+      subject { Bitmovin::Encoding::Encodings::Stream.new('encoding-id') }
+      it "should return false" do
+        expect(subject.save!).to be_falsy
+      end
+
+      it "should add error to errors" do
+        subject.save!
+        expect(subject.errors).to include("Stream needs at least one input_stream")
+      end
+    end
+    context "with one invalid input_stream" do
+      subject do
+        stream.input_streams.clear
+        stream.build_input_stream
+        stream
+      end
+
+      it "should return false" do
+        expect(subject.save!).to be_falsy
+      end
+
+      it "should call valid? on input_stream" do
+        expect(subject.input_streams.first).to receive(:valid?)
+        subject.valid?
+      end
+
+      it "should add error from input stream to errors" do
+        allow(subject.input_streams.first).to receive(:valid?).and_return(false)
+        allow(subject.input_streams.first).to receive(:errors).and_return(["invalid"])
+        subject.valid?
+        expect(subject).to have(1).errors
+        expect(subject.errors).to eq(["invalid"])
+      end
+    end
+
+    context "with valid values" do
+      subject { stream }
+      it { is_expected.to be_valid }
+    end
+
+    context "without a codec configuration" do
+      subject do
+        stream.codec_configuration = ""
+        stream
+      end
+
+      it "should return false" do
+        expect(subject.valid?).to be_falsy
+      end
+
+      it "should add to errors" do
+        subject.valid?
+        expect(subject).to have(1).errors
+      end
+    end
+
+    context "with invalid outputs" do
+      subject { stream }
+      
+      it "should allow empty outputs" do
+        stream.outputs.clear
+        expect(stream).to be_valid
+      end
+
+      it "should not allow invalid outputs" do
+        allow(stream.outputs.first).to receive(:valid?).and_return(false)
+        allow(stream.outputs.first).to receive(:errors).and_return(["invalid"])
+        expect(stream).to be_invalid
+        expect(subject).to have(1).errors
+        expect(subject.errors).to eq(["invalid"])
+      end
+
+      it "should validate outputs" do
+        expect(subject.outputs.first).to receive(:valid?)
+        subject.valid?
+      end
+    end
+  end
+
+  describe "valid?" do
+    subject { Bitmovin::Encoding::Encodings::Stream.new('encoding-id') }
+    it "should return true if @errors is not empty" do
+      allow(subject).to receive(:@errors).and_return(["test"])
+      expect(subject.valid?).to be_falsy
     end
   end
 end
