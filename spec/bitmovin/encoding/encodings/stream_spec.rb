@@ -300,9 +300,23 @@ describe Bitmovin::Encoding::Encodings::Stream do
         .with(body: body)
     end
 
-    it "should call POST /v1/encoding/encodings/<encoding-id>/streams" do
+    it "should call POST /v1/encoding/encodings/<encoding-id>/streams with correct body" do
       subject.id = nil
       expect(subject.save!).to have_requested(:post, /.*#{"/v1/encoding/encodings/#{stream.encoding_id}/streams"}/).with(body: body)
+    end
+
+    it "should call POST /v1/encoding/encodings/<encoding-id>/streams" do
+      subject.id = nil
+      expect(subject.save!).to have_requested(:post, /.*#{"/v1/encoding/encodings/#{stream.encoding_id}/streams"}/)
+    end
+
+  end
+  describe "delete!" do
+    before(:each) do
+      stub_request(:delete, /.*#{"/v1/encoding/encodings/#{stream.encoding_id}/streams/#{stream.id}"}/)
+    end
+    it "should call DELETE /v1/encoding/encodings/<encoding-id>/streams/<stream-id>" do
+      expect(subject.delete!).to have_requested(:delete, /.*#{"/v1/encoding/encodings/#{stream.encoding_id}/streams/#{stream.id}"}/)
     end
   end
 end
