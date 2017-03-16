@@ -25,7 +25,20 @@ module Bitmovin::Encoding::Encodings
       @errors
     end
 
+    def to_json(args)
+      collect_attributes.to_json(args)
+    end
+
     private
+
+    def collect_attributes
+      val = Hash.new
+      [:output_id, :output_path, :acl].each do |name|
+        json_name = ActiveSupport::Inflector.camelize(name.to_s, false)
+        val[json_name] = instance_variable_get("@#{name}")
+      end
+      val
+    end
     def validate!
       @errors << "output_id cannot be blank" if @output_id.blank?
       @errors << "output_path cannot be blank" if @output_path.blank?

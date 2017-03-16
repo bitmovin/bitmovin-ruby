@@ -6,7 +6,7 @@ module Bitmovin::Encoding::Encodings
     def initialize(encoding_id, hash = {})
       hsh = ActiveSupport::HashWithIndifferentAccess.new(underscore_hash(hash))
       @encoding_id = encoding_id
-      @resource_path = File.join("/v1/encoding/encodings/", encoding_id, "streams")
+      self.class.init(File.join("/v1/encoding/encodings/", encoding_id, "streams"))
       super(hash)
       @outputs = (hsh[:outputs] || []).map { |output| StreamOutput.new(@encoding_id, @id, output) }
       @input_streams = (hsh[:input_streams] || []).map { |input| StreamInput.new(@encoding_id, @id, input) }
@@ -48,7 +48,9 @@ module Bitmovin::Encoding::Encodings
     end
 
     def save!
-      valid?
+      if valid?
+        super
+      end
     end
 
     def valid?

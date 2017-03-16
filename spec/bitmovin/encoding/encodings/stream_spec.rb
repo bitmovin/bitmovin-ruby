@@ -179,20 +179,19 @@ describe Bitmovin::Encoding::Encodings::Stream do
     end
   end
 
-  it { should respond_to(:save!) }
   it { should respond_to(:valid?) }
   it { should respond_to(:invalid?) }
   it { should respond_to(:errors) }
 
-  describe "save!" do
+  describe "validation" do
     context "without input_streams" do
       subject { Bitmovin::Encoding::Encodings::Stream.new('encoding-id') }
       it "should return false" do
-        expect(subject.save!).to be_falsy
+        expect(subject).to be_invalid
       end
 
       it "should add error to errors" do
-        subject.save!
+        subject.valid?
         expect(subject.errors).to include("Stream needs at least one input_stream")
       end
     end
@@ -204,7 +203,7 @@ describe Bitmovin::Encoding::Encodings::Stream do
       end
 
       it "should return false" do
-        expect(subject.save!).to be_falsy
+        expect(subject).to be_invalid
       end
 
       it "should call valid? on input_stream" do
@@ -215,7 +214,7 @@ describe Bitmovin::Encoding::Encodings::Stream do
       it "should add error from input stream to errors" do
         allow(subject.input_streams.first).to receive(:valid?).and_return(false)
         allow(subject.input_streams.first).to receive(:errors).and_return(["invalid"])
-        subject.valid?
+        expect(subject).to be_invalid
         expect(subject).to have(1).errors
         expect(subject.errors).to eq(["invalid"])
       end
@@ -233,7 +232,7 @@ describe Bitmovin::Encoding::Encodings::Stream do
       end
 
       it "should return false" do
-        expect(subject.valid?).to be_falsy
+        expect(subject).to be_invalid
       end
 
       it "should add to errors" do
@@ -270,6 +269,34 @@ describe Bitmovin::Encoding::Encodings::Stream do
     it "should return true if @errors is not empty" do
       allow(subject).to receive(:@errors).and_return(["test"])
       expect(subject.valid?).to be_falsy
+    end
+  end
+
+  describe "invalid?" do
+    it "should call valid?" do
+      expect(subject).to receive(:valid?).and_return(false)
+      subject.invalid?
+    end
+    it "should invert valid?" do
+      allow(subject).to receive(:valid?).and_return(false)
+      expect(subject).to be_invalid
+    end
+  end
+
+  describe "save" do
+    it "should call valid?" do
+      expect(subject).to receive(:valid?)
+      subject.save!
+    end
+    before(:each) do
+      stub_request(:post, /.*#{"/v1/encoding/encodings/#{stream.encoding_id}/streams"}/)
+    end
+
+    it "should call POST /v1/encoding/encodings/<encoding-id>/streams" do
+      subject.id = nil
+      stream_json.delete(:id)
+      expected_body = stream_json
+      expect(subject.save!).to have_requested(:post, /.*#{"/v1/encoding/encodings/#{stream.encoding_id}/streams"}/).with(body: expected_body)
     end
   end
 end
