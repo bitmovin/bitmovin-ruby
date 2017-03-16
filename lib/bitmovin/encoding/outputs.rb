@@ -14,3 +14,4 @@ module Bitmovin::Encoding
   end
 end
 require 'bitmovin/encoding/outputs/s3_output'
+require 'bitmovin/encoding/outputs/gcs_output'
