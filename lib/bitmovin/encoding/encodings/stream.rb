@@ -4,6 +4,7 @@ module Bitmovin::Encoding::Encodings
     attr_accessor :id
 
     def initialize(encoding_id, hash = {})
+      set_defaults
       hsh = ActiveSupport::HashWithIndifferentAccess.new(underscore_hash(hash))
       @encoding_id = encoding_id
       self.class.init(File.join("/v1/encoding/encodings/", encoding_id, "streams"))
@@ -92,6 +93,10 @@ module Bitmovin::Encoding::Encodings
       @errors << "codec_configuration must be set" if @codec_config_id.blank?
 
       @errors.flatten!
+    end
+
+    def set_defaults
+      @create_quality_meta_data = false
     end
   end
 end
