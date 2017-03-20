@@ -62,4 +62,23 @@ describe Bitmovin::Encoding::Encodings::StreamList do
       expect(subject.first.id).to eq(stream[:id])
     end
   end
+
+  describe "build" do
+    subject { stream_list.build }
+    it "should return stream" do
+      expect(subject).to be_a(Bitmovin::Encoding::Encodings::Stream)
+    end
+    it "should create stream with correct encoding_id" do
+      expect(subject.encoding_id).to eq(stream_list.encoding_id)
+    end
+    it "should accept hash arguments" do
+      expect(stream_list).to respond_to(:build).with(0..1).arguments
+    end
+    it "should pass hash arguments to Stream.new" do
+      args = { foo: :bar }
+      expect(Bitmovin::Encoding::Encodings::Stream).to receive(:new).with(stream_list.encoding_id, args)
+
+      stream_list.build(args)
+    end
+  end
 end

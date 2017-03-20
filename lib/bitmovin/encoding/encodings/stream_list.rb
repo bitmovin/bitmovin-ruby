@@ -17,8 +17,8 @@ module Bitmovin::Encoding::Encodings
       # TODO
     end
 
-    def build
-      # TODO
+    def build(hash = {})
+      Bitmovin::Encoding::Encodings::Stream.new(@encoding_id, hash)
     end
 
     def find(id)
