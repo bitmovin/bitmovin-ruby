@@ -22,7 +22,9 @@ module Bitmovin::Encoding::Encodings
     end
 
     def find(id)
-      # TODO
+      path = File.join("/v1/encoding/encodings/", @encoding_id, "streams", id)
+      response = Bitmovin.client.get(path)
+      Stream.new(@encoding_id, result(response))
     end
   end
 end

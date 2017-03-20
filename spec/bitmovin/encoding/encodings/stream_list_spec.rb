@@ -81,4 +81,21 @@ describe Bitmovin::Encoding::Encodings::StreamList do
       stream_list.build(args)
     end
   end
+
+  describe "find" do
+    subject { stream_list.find('stream-id') }
+
+    before(:each) do
+      stub_request(:get, /.*#{"/v1/encoding/encodings/encoding-id/streams/stream-id"}.*/)
+        .to_return(body: response_envelope(stream).to_json)
+    end
+
+    it "should return a Stream" do
+      expect(subject).to be_a(Bitmovin::Encoding::Encodings::Stream)
+    end
+
+    it "should call GET /v1/encoding/encodings/<encoding-id>/streams/<stream-id>" do
+      expect(subject).to have_requested(:get, /.*#{"/v1/encoding/encodings/encoding-id/streams/stream-id"}.*/)
+    end
+  end
 end
