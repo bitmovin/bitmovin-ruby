@@ -98,4 +98,11 @@ describe Bitmovin::Encoding::Encodings::StreamList do
       expect(subject).to have_requested(:get, /.*#{"/v1/encoding/encodings/encoding-id/streams/stream-id"}.*/)
     end
   end
+
+  describe "add" do
+    subject { stream_list.add('test') }
+    it "should raise not implemented error" do
+      expect { subject }.to raise_error("Not implemented yet. Please use #build and Stream#save! for the time being")
+    end
+  end
 end

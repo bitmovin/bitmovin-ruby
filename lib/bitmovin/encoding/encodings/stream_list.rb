@@ -14,7 +14,7 @@ module Bitmovin::Encoding::Encodings
     end
 
     def add(stream)
-      # TODO
+      raise "Not implemented yet. Please use #build and Stream#save! for the time being"
     end
 
     def build(hash = {})
