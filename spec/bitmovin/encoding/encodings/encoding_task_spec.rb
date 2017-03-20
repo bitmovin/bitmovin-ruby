@@ -53,6 +53,8 @@ describe Bitmovin::Encoding::Encodings::EncodingTask do
 
     it { should respond_to(:streams) }
 
+    it { should respond_to(:muxings) }
+
     it "vod? should return true if type is vod" do
       subject.type = "VOD"
       expect(subject.vod?).to be_truthy
@@ -67,6 +69,11 @@ describe Bitmovin::Encoding::Encodings::EncodingTask do
     it "streams should return a StreamList" do
       expect(subject.streams).to be_a(Bitmovin::Encoding::Encodings::StreamList)
       expect(subject.streams.encoding_id).to eq(subject.id)
+    end
+
+    it "muxings should return a MuxingList" do
+      expect(subject.muxings).to be_a(Bitmovin::Encoding::Encodings::MuxingList)
+      expect(subject.muxings.encoding_id).to eq(subject.id)
     end
   end
 

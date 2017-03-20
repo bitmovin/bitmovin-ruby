@@ -5,6 +5,7 @@ module Bitmovin::Encoding::Encodings
     def initialize(hash = {})
       super(hash)
       @stream_list = StreamList.new(@id)
+      @muxing_list = MuxingList.new(@id)
     end
 
     attr_accessor :id, :name, :description
@@ -23,8 +24,12 @@ module Bitmovin::Encoding::Encodings
       @stream_list
     end
 
+    def muxings
+      @muxing_list
+    end
+
     def ignore_fields
-      [:@stream_list]
+      [:@stream_list, :@muxing_list]
     end
 
     def self.list(limit = 100, offset = 0)
