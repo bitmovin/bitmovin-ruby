@@ -32,7 +32,7 @@ module Bitmovin::Encoding::Encodings
     end
 
     def build_output(opts = {})
-      output = StreamOutput.new(@encoding_id, @id, opts)
+      output = Bitmovin::Encoding::Encodings::StreamOutput.new(@encoding_id, @id, opts)
       @outputs << output
       output
     end

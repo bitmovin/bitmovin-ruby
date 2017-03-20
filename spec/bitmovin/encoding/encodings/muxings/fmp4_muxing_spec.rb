@@ -40,8 +40,9 @@ describe Bitmovin::Encoding::Encodings::Muxings::Fmp4Muxing do
   it { should respond_to(:segment_naming) }
   it { should respond_to(:init_segment_name) }
   it { should respond_to(:streams) }
-  it { should respond_to(:stream_ids) }
   it { should respond_to(:outputs) }
+
+  it { should respond_to(:build_output).with(0..1).argument }
 
   describe "outputs" do
     it "should be Array" do
@@ -74,5 +75,44 @@ describe Bitmovin::Encoding::Encodings::Muxings::Fmp4Muxing do
       expect(subject.first).to eq("f3177c2e-0000-4ba6-bd20-1dee353d8a72")
     end
 
+  end
+
+  describe "collect_attributes" do
+    subject { muxing.send(:collect_attributes) }
+    it "should correctly collect outputs" do
+      expect(subject["outputs"]).to be_a(Array)
+      expect(subject["outputs"].first).to be_a(Hash)
+      expect(subject["outputs"].first["outputId"]).to eq("55354be6-0237-42bb-ae85-a2d4ef1ed19e")
+      expect(subject["outputs"].first["outputPath"]).to eq("/encodings/movies/movie-1/video_720/")
+    end
+
+    it "should correctly collect streams" do
+      expect(subject["streams"]).to be_a(Array)
+      expect(subject["streams"].first).to eq({"streamId" => "f3177c2e-0000-4ba6-bd20-1dee353d8a72"})
+    end
+  end
+
+  describe "build_output" do
+    subject { muxing.build_output(output_id: 'output') }
+    it "should return a StreamOutput" do
+      expect(subject).to be_a(Bitmovin::Encoding::Encodings::StreamOutput)
+    end
+
+    it "should return a muxingOutput with correct encoding_id" do
+      expect(subject.encoding_id).to eq(muxing.encoding_id)
+    end
+
+    it "should return a StreamOutput initialized from parameter hash" do
+      expect(subject.output_id).to eq('output')
+    end
+
+    it "should be automatically be added to outputs array of muxing" do
+      expect(muxing.outputs).to include(subject)
+    end
+
+    it "should be a reference" do
+      subject.output_path = "test"
+      expect(muxing.outputs).to include(have_attributes(output_path: "test"))
+    end
   end
 end

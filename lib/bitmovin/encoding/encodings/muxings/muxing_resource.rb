@@ -1,5 +1,6 @@
 module Bitmovin::Encoding::Encodings::Muxings
   class MuxingResource < Bitmovin::Resource
+    attr_accessor :name, :description, :created_at, :modified_at
     attr_accessor :encoding_id
     attr_accessor :id
 
@@ -17,6 +18,39 @@ module Bitmovin::Encoding::Encodings::Muxings
       end
     end
 
-    attr_accessor :streams, :outputs, :stream_ids
+    attr_accessor :streams, :outputs
+
+    def build_output(opts = {})
+      output = Bitmovin::Encoding::Encodings::StreamOutput.new(@encoding_id, @id, opts)
+      @outputs << output
+      output
+    end
+
+    private
+
+    def collect_attributes
+      val = Hash.new
+      ignored_variables = []
+      if (self.respond_to?(:ignore_fields))
+        ignored_variables = self.ignore_fields
+      end
+      instance_variables.each do |name|
+        if ignored_variables.include?(name)
+          next
+        end
+        if name == :@outputs
+          val["outputs"] = @outputs.map { |o| o.send(:collect_attributes) }
+          next
+        end
+
+        if name == :@streams
+          val["streams"] = @streams.map { |s| { "streamId" => s } }
+          next
+        end
+        json_name = ActiveSupport::Inflector.camelize(name.to_s.gsub(/@/, ''), false)
+        val[json_name] = instance_variable_get(name)
+      end
+      val
+    end
   end
 end
