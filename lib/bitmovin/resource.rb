@@ -22,6 +22,8 @@ module Bitmovin
       end
     end
 
+    attr_accessor :id, :name, :description, :created_at, :modified_at
+
 
     def initialize(hash = {})
       hash.each do |name, value|
