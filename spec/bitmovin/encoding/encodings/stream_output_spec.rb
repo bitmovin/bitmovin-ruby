@@ -12,10 +12,8 @@ describe Bitmovin::Encoding::Encodings::StreamOutput do
       ]
     }
   }
-  subject { Bitmovin::Encoding::Encodings::StreamOutput.new('encoding', nil, json) }
+  subject { Bitmovin::Encoding::Encodings::StreamOutput.new(json) }
 
-  it { should respond_to(:output_id) }
-  it { should respond_to(:output_path) }
   it { should respond_to(:acl) }
   it { should respond_to(:valid?) }
   it { should respond_to(:invalid?) }

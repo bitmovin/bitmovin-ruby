@@ -131,9 +131,21 @@ describe Bitmovin::Encoding::Manifests::DashManifest do
       end
     end
 
+    describe "persisted" do
+      it "should be true for manifests with set id" do
+        expect(manifest_with_id.persisted?).to be_truthy
+      end
+      it "should be false for manifests without id" do
+        expect(manifest.persisted?).to be_falsy
+      end
+    end
+
     describe "adaptationsets" do
       let(:manifest) { Bitmovin::Encoding::Manifests::DashManifest.new({ id: 'manifest-id' }) }
       subject { manifest.adaptationsets }
+      it "should throw not implemented yet exception" do
+        expect { subject }.to raise_error("not implemented yet")
+      end
       #pending("Not implemented yet") do
       #  it { should be_a(Bitmovin::Encoding::Manifests::DashAdaptationset) }
       #end

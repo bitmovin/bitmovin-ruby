@@ -98,10 +98,6 @@ describe Bitmovin::Encoding::Encodings::Muxings::Fmp4Muxing do
       expect(subject).to be_a(Bitmovin::Encoding::Encodings::StreamOutput)
     end
 
-    it "should return a muxingOutput with correct encoding_id" do
-      expect(subject.encoding_id).to eq(muxing.encoding_id)
-    end
-
     it "should return a StreamOutput initialized from parameter hash" do
       expect(subject.output_id).to eq('output')
     end
