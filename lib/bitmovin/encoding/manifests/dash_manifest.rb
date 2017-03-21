@@ -7,12 +7,42 @@ module Bitmovin::Encoding::Manifests
       super(hash)
       @adaptationsets = DashAdaptationset.new(@id)
       @outputs = (hsh[:outputs] || []).map { |output| Bitmovin::Encoding::Encodings::StreamOutput.new(@encoding_id, @id, output) }
+      @periods = nil
     end
 
     attr_accessor :outputs, :manifest_name
-    attr_reader :adaptationsets
+    def periods
+      if @periods.nil?
+        @periods = load_periods
+      end
+      @periods
+    end
+
+    def build_period(hash = {})
+      @periods << Period.new(@id) 
+    end
+
+    #attr_reader :adaptationsets
+    def adaptationsets
+      raise "not implemented yet"
+    end
+
+    def persisted?
+      !@id.nil?
+    end
 
     private
+    def load_periods
+      if !persisted?
+        raise "Manifest is not persisted yet - can't load periods"
+      end
+      path = File.join("/v1/encoding/manifests/dash", @id, "periods")
+      response = Bitmovin.client.get path
+      result(response)["items"].map do |period|
+        Period.new(@id, period)
+      end
+    end
+
     def collect_attributes
       val = Hash.new
       [:name, :description, :manifest_name].each do |name|
