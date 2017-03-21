@@ -1,3 +1,4 @@
+require 'pry'
 module Bitmovin
   class Resource
     include Bitmovin::Helpers
@@ -26,9 +27,7 @@ module Bitmovin
 
 
     def initialize(hash = {})
-      hash.each do |name, value|
-        instance_variable_set("@#{ActiveSupport::Inflector.underscore(name)}", value)
-      end
+      init_from_hash(hash)
     end
 
     def save!
@@ -40,7 +39,8 @@ module Bitmovin
         post.url self.class.resource_path
         post.body = collect_attributes
       end
-      response
+      init_from_hash(result(response))
+      self
     end
 
 
@@ -53,6 +53,12 @@ module Bitmovin
     end
 
     private
+
+    def init_from_hash(hash = {})
+      hash.each do |name, value|
+        instance_variable_set("@#{ActiveSupport::Inflector.underscore(name)}", value)
+      end
+    end
 
     def collect_attributes
       val = Hash.new

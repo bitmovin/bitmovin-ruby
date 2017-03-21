@@ -100,12 +100,14 @@ def test_resource_methods(klass, path, resources)
           it "should call POST #{path}" do
             stub_request(:post, /.*#{path}/)
               .with(body: body.to_json)
+              .to_return(body: response_envelope({ id: 'foo' }).to_json)
             expect(subject.save!).to have_requested(:post, /.*#{path}/)
           end
 
           it "should send body" do
             stub_request(:post, /.*#{path}/)
               .with(body: body.to_json)
+              .to_return(body: response_envelope({ id: 'foo' }).to_json)
             expect(subject.save!).to have_requested(:post, /.*#{path}/).with(body: body.to_json)
           end
         end

@@ -19,7 +19,8 @@ module Bitmovin::Encoding::Manifests
     end
 
     def build_period(hash = {})
-      @periods << Period.new(@id) 
+      period = Period.new(@id, hash) 
+      period
     end
 
     #attr_reader :adaptationsets
@@ -29,6 +30,10 @@ module Bitmovin::Encoding::Manifests
 
     def persisted?
       !@id.nil?
+    end
+
+    def reload!
+      @periods = nil
     end
 
     private

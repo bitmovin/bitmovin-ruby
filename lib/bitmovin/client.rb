@@ -14,6 +14,7 @@ module Bitmovin
         }) do |faraday|
 
         faraday.request :json
+        #faraday.response :logger
         faraday.adapter :httpclient
       end
     end

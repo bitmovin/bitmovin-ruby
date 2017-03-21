@@ -298,6 +298,7 @@ describe Bitmovin::Encoding::Encodings::Stream do
     before(:each) do
       stub_request(:post, /.*#{"/v1/encoding/encodings/#{stream.encoding_id}/streams"}/)
         .with(body: body)
+        .to_return(body: response_envelope({id: 'test'}).to_json)
     end
 
     it "should call POST /v1/encoding/encodings/<encoding-id>/streams with correct body" do

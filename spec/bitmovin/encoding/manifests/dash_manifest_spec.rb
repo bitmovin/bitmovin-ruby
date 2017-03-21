@@ -6,6 +6,7 @@ describe Bitmovin::Encoding::Manifests::DashManifest do
 
   describe "instance" do
     let(:manifest) { Bitmovin::Encoding::Manifests::DashManifest.new }
+    let(:manifest_with_id) { Bitmovin::Encoding::Manifests::DashManifest.new(id: 'manifest-id') }
     subject { manifest }
     it { should respond_to(:id) }
     it { should respond_to(:name) }
@@ -19,6 +20,7 @@ describe Bitmovin::Encoding::Manifests::DashManifest do
     it { should respond_to(:manifest_name) }
     it { should be_a(Bitmovin::Resource) }
     it { should respond_to(:adaptationsets) }
+    it { should respond_to(:reload!) }
 
     let(:output_json) { 
       {
@@ -31,6 +33,14 @@ describe Bitmovin::Encoding::Manifests::DashManifest do
         ]
       }
     }
+
+    describe "reload" do
+      it "should clear @periods" do
+        subject.instance_variable_set(:@periods, [])
+        subject.reload!
+        expect(subject.instance_variable_get(:@periods)).to be_nil
+      end
+    end
 
     describe "periods" do
       it "should fetch periods if not loaded yet" do
@@ -63,6 +73,14 @@ describe Bitmovin::Encoding::Manifests::DashManifest do
       it "should raise an error if dash manifest is not persisted" do
         manifest = Bitmovin::Encoding::Manifests::DashManifest.new
         expect { manifest.periods }.to raise_error("Manifest is not persisted yet - can't load periods")
+      end
+    end
+
+    describe "build_period" do
+      subject { manifest_with_id.build_period }
+      it { should be_a(Bitmovin::Encoding::Manifests::Period) }
+      it "should return correct manifest_id" do
+        expect(subject.manifest_id).to eq(manifest_with_id.id)
       end
     end
 
