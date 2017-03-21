@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Bitmovin::Encoding::Encodings::StreamOutput do
+describe Bitmovin::Encoding::StreamOutput do
   let(:json) {
     {
       outputId: "55354be6-0237-42bb-ae85-a2d4ef1ed19e",
@@ -12,7 +12,7 @@ describe Bitmovin::Encoding::Encodings::StreamOutput do
       ]
     }
   }
-  subject { Bitmovin::Encoding::Encodings::StreamOutput.new(json) }
+  subject { Bitmovin::Encoding::StreamOutput.new(json) }
 
   it { should respond_to(:acl) }
   it { should respond_to(:valid?) }

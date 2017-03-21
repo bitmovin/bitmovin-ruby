@@ -9,7 +9,7 @@ module Bitmovin::Encoding::Encodings
       @encoding_id = encoding_id
       self.class.init(File.join("/v1/encoding/encodings/", encoding_id, "streams"))
       super(hash)
-      @outputs = (hsh[:outputs] || []).map { |output| StreamOutput.new(output) }
+      @outputs = (hsh[:outputs] || []).map { |output| Bitmovin::Encoding::StreamOutput.new(output) }
       @input_streams = (hsh[:input_streams] || []).map { |input| StreamInput.new(@encoding_id, @id, input) }
 
       @errors = []
@@ -32,7 +32,7 @@ module Bitmovin::Encoding::Encodings
     end
 
     def build_output(opts = {})
-      output = Bitmovin::Encoding::Encodings::StreamOutput.new(opts)
+      output = Bitmovin::Encoding::StreamOutput.new(opts)
       @outputs << output
       output
     end

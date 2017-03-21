@@ -50,7 +50,7 @@ describe Bitmovin::Encoding::Encodings::Muxings::Fmp4Muxing do
     end
 
     it "should be Array of StreamOutput" do
-      expect(subject.outputs.first).to be_a(Bitmovin::Encoding::Encodings::StreamOutput)
+      expect(subject.outputs.first).to be_a(Bitmovin::Encoding::StreamOutput)
     end
 
     it "should correctly populate StreamOutput" do
@@ -95,7 +95,7 @@ describe Bitmovin::Encoding::Encodings::Muxings::Fmp4Muxing do
   describe "build_output" do
     subject { muxing.build_output(output_id: 'output') }
     it "should return a StreamOutput" do
-      expect(subject).to be_a(Bitmovin::Encoding::Encodings::StreamOutput)
+      expect(subject).to be_a(Bitmovin::Encoding::StreamOutput)
     end
 
     it "should return a StreamOutput initialized from parameter hash" do

@@ -1,4 +1,4 @@
-module Bitmovin::Encoding::Encodings
+module Bitmovin::Encoding
   class StreamOutput
     def initialize(hash = {})
       @errors = []

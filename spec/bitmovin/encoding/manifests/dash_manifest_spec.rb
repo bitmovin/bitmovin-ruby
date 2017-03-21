@@ -100,7 +100,7 @@ describe Bitmovin::Encoding::Manifests::DashManifest do
       it { should be_a(Array) }
       it "should contain StreamOutput" do
         expect(manifest).to have(1).outputs
-        expect(subject.first).to be_a(Bitmovin::Encoding::Encodings::StreamOutput)
+        expect(subject.first).to be_a(Bitmovin::Encoding::StreamOutput)
       end
 
       it "should initialize StreamOutput correctly" do

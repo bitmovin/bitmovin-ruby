@@ -11,7 +11,7 @@ module Bitmovin::Encoding::Encodings::Muxings
       self.class.init(File.join("/v1/encoding/encodings/", encoding_id, "muxings", muxing_type))
       super(hsh)
       @outputs = (hsh[:outputs] || []).map do |output|
-        Bitmovin::Encoding::Encodings::StreamOutput.new(output)
+        Bitmovin::Encoding::StreamOutput.new(output)
       end
       @streams = (hsh[:streams] || []).map do |stream|
         stream[:stream_id]
@@ -21,7 +21,7 @@ module Bitmovin::Encoding::Encodings::Muxings
     attr_accessor :streams, :outputs
 
     def build_output(opts = {})
-      output = Bitmovin::Encoding::Encodings::StreamOutput.new(opts)
+      output = Bitmovin::Encoding::StreamOutput.new(opts)
       @outputs << output
       output
     end

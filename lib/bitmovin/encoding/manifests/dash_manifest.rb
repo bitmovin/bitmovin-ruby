@@ -6,7 +6,7 @@ module Bitmovin::Encoding::Manifests
       hsh = ActiveSupport::HashWithIndifferentAccess.new(underscore_hash(hash))
       super(hash)
       @adaptationsets = DashAdaptationset.new(@id)
-      @outputs = (hsh[:outputs] || []).map { |output| Bitmovin::Encoding::Encodings::StreamOutput.new(output) }
+      @outputs = (hsh[:outputs] || []).map { |output| Bitmovin::Encoding::StreamOutput.new(output) }
       @periods = nil
     end
 

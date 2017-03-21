@@ -81,7 +81,7 @@ describe Bitmovin::Encoding::Encodings::Stream do
       expect(subject).to be_a(Array)
     end
     it "should return an Array of StreamOutput" do
-      expect(subject.first).to be_a(Bitmovin::Encoding::Encodings::StreamOutput)
+      expect(subject.first).to be_a(Bitmovin::Encoding::StreamOutput)
     end
   end
 
@@ -108,7 +108,7 @@ describe Bitmovin::Encoding::Encodings::Stream do
   describe "build_output" do
     subject { stream.build_output(output_id: 'output') }
     it "should return a StreamOutput" do
-      expect(subject).to be_a(Bitmovin::Encoding::Encodings::StreamOutput)
+      expect(subject).to be_a(Bitmovin::Encoding::StreamOutput)
     end
 
     it "should return a StreamOutput initialized from parameter hash" do
