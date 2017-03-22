@@ -43,6 +43,9 @@ module Bitmovin
       self
     end
 
+    def persisted?
+      !@id.nil?
+    end
 
     def delete!
       Bitmovin.client.delete File.join(self.class.resource_path, @id)
