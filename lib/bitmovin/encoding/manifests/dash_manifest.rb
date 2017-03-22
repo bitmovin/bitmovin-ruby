@@ -5,7 +5,6 @@ module Bitmovin::Encoding::Manifests
     def initialize(hash = {})
       hsh = ActiveSupport::HashWithIndifferentAccess.new(underscore_hash(hash))
       super(hash)
-      @adaptationsets = DashAdaptationset.new(@id)
       @outputs = (hsh[:outputs] || []).map { |output| Bitmovin::Encoding::StreamOutput.new(output) }
       @periods = nil
     end
@@ -21,11 +20,6 @@ module Bitmovin::Encoding::Manifests
     def build_period(hash = {})
       period = Period.new(@id, hash) 
       period
-    end
-
-    #attr_reader :adaptationsets
-    def adaptationsets
-      raise "not implemented yet"
     end
 
     def persisted?

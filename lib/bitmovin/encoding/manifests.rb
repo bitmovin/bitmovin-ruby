@@ -16,7 +16,6 @@ end
 
 require 'bitmovin/encoding/manifests/dash_manifest'
 require 'bitmovin/encoding/manifests/hls_manifest'
-require 'bitmovin/encoding/manifests/dash_adaptationset'
-require 'bitmovin/encoding/manifests/video_adaptation'
+require 'bitmovin/encoding/manifests/video_adaptation_set'
 require 'bitmovin/encoding/manifests/dash_representations'
 require 'bitmovin/encoding/manifests/period'

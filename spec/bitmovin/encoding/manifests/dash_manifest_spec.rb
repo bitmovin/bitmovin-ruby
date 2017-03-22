@@ -19,7 +19,6 @@ describe Bitmovin::Encoding::Manifests::DashManifest do
     it { should respond_to(:outputs) }
     it { should respond_to(:manifest_name) }
     it { should be_a(Bitmovin::Resource) }
-    it { should respond_to(:adaptationsets) }
     it { should respond_to(:reload!) }
 
     let(:output_json) { 
@@ -138,21 +137,6 @@ describe Bitmovin::Encoding::Manifests::DashManifest do
       it "should be false for manifests without id" do
         expect(manifest.persisted?).to be_falsy
       end
-    end
-
-    describe "adaptationsets" do
-      let(:manifest) { Bitmovin::Encoding::Manifests::DashManifest.new({ id: 'manifest-id' }) }
-      subject { manifest.adaptationsets }
-      it "should throw not implemented yet exception" do
-        expect { subject }.to raise_error("not implemented yet")
-      end
-      #pending("Not implemented yet") do
-      #  it { should be_a(Bitmovin::Encoding::Manifests::DashAdaptationset) }
-      #end
-      #it "should have correct manifest_id" do
-      #  pending("Not implemented yet")
-      #  expect(subject.manifest_id).to eq(manifest.id)
-      #end
     end
   end
 end
