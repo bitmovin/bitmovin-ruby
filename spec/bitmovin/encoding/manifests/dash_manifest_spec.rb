@@ -47,9 +47,8 @@ describe Bitmovin::Encoding::Manifests::DashManifest do
         subject.periods
       end
       it "should not reload periods if already loaded" do
-        subject.instance_variable_set(:@periods, [])
-        expect(subject).to_not receive(:load_periods)
-        subject.periods
+        expect(subject).to receive(:load_periods).exactly(1).and_return([])
+        2.times { subject.periods }
       end
     end
 
