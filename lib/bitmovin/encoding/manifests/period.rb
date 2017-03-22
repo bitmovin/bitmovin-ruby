@@ -1,5 +1,7 @@
 module Bitmovin::Encoding::Manifests
   class Period < Bitmovin::Resource
+    include Bitmovin::ChildCollection
+
     def initialize(manifest_id, hash = {})
       self.class.init(File.join("/v1/encoding/manifests/dash/", manifest_id, "periods"))
       @manifest_id = manifest_id
@@ -9,39 +11,8 @@ module Bitmovin::Encoding::Manifests
     end
     attr_accessor :manifest_id, :duration, :start
 
-    def video_adaptationsets
-      if !persisted?
-        raise "Period is not persisted yet - can't create video adaptationset"
-      end
-      if @video_adaptationsets.nil?
-        @video_adaptationsets = load_video_adaptationsets
-      end
-      @video_adaptationsets
-    end
-
-    def audio_adaptationsets
-      if !persisted?
-        raise "Period is not persisted yet - can't create audio adaptationset"
-      end
-      if @audio_adaptationsets.nil?
-        @audio_adaptationsets = load_audio_adaptationsets
-      end
-      @audio_adaptationsets
-    end
-
-    def build_video_adaptationset(hash = {})
-      if !persisted?
-        raise "Period is not persisted yet - can't create video adaptationset"
-      end
-      VideoAdaptationSet.new(@manifest_id, @id, hash)
-    end
-
-    def build_audio_adaptationset(hash = {})
-      if !persisted?
-        raise "Period is not persisted yet - can't create audio adaptationset"
-      end
-      AudioAdaptationSet.new(@manifest_id, @id, hash)
-    end
+    child_collection(:video_adaptationsets, "/v1/encoding/manifests/dash/%s/periods/%s/adaptationsets/video", [:manifest_id, :id], VideoAdaptationSet)
+    child_collection(:audio_adaptationsets, "/v1/encoding/manifests/dash/%s/periods/%s/adaptationsets/audio", [:manifest_id, :id], AudioAdaptationSet)
 
     def persisted?
       !@id.nil?

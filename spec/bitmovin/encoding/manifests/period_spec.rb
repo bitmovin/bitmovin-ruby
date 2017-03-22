@@ -18,10 +18,6 @@ describe Bitmovin::Encoding::Manifests::Period do
     it "should query /v1/encoding/manifests/dash/<manifest-id>/periods/<period-id>/adaptations/video" do
       expect(subject).to have_requested(:get, /.*#{"/v1/encoding/manifests/dash/manifest-id/periods/#{period.id}/adaptationsets/video"}/)
     end
-    it "should cache the result" do
-      expect(period).to receive(:load_video_adaptationsets).exactly(1).and_return([])
-      2.times { period.video_adaptationsets }
-    end
 
     it "should return an Array" do
       expect(subject).to be_a(Array)
@@ -37,7 +33,7 @@ describe Bitmovin::Encoding::Manifests::Period do
     context "unpersisted period" do
       let(:period) { Bitmovin::Encoding::Manifests::Period.new('manifest-id') }
       it "should raise error" do
-        expect { period.video_adaptationsets }.to raise_error("Period is not persisted yet - can't create video adaptationset")
+        expect { period.video_adaptationsets }.to raise_error("Period is not persisted yet - can't load video_adaptationsets")
       end
     end
   end
@@ -52,10 +48,6 @@ describe Bitmovin::Encoding::Manifests::Period do
 
     it "should query /v1/encoding/manifests/dash/<manifest-id>/periods/<period-id>/adaptations/audio" do
       expect(subject).to have_requested(:get, /.*#{"/v1/encoding/manifests/dash/manifest-id/periods/#{period.id}/adaptationsets/audio"}/)
-    end
-    it "should cache the result" do
-      expect(period).to receive(:load_audio_adaptationsets).exactly(1).and_return([])
-      2.times { period.audio_adaptationsets }
     end
 
     it "should return an Array" do
@@ -72,7 +64,7 @@ describe Bitmovin::Encoding::Manifests::Period do
     context "unpersisted period" do
       let(:period) { Bitmovin::Encoding::Manifests::Period.new('manifest-id') }
       it "should raise error" do
-        expect { period.audio_adaptationsets }.to raise_error("Period is not persisted yet - can't create audio adaptationset")
+        expect { period.audio_adaptationsets }.to raise_error("Period is not persisted yet - can't load audio_adaptationsets")
       end
     end
   end
@@ -93,7 +85,7 @@ describe Bitmovin::Encoding::Manifests::Period do
     context "unpersisted period" do
       let(:period) { Bitmovin::Encoding::Manifests::Period.new('manifest-id') }
       it "should raise error" do
-        expect { period.build_video_adaptationset }.to raise_error("Period is not persisted yet - can't create video adaptationset")
+        expect { period.build_video_adaptationset }.to raise_error("Period is not persisted yet - can't create video_adaptationset")
       end
     end
   end
@@ -114,7 +106,7 @@ describe Bitmovin::Encoding::Manifests::Period do
     context "with unpersisted period" do
       let(:period) { Bitmovin::Encoding::Manifests::Period.new('manifest-id') }
       it "should raise error" do
-        expect { period.build_audio_adaptationset }.to raise_error("Period is not persisted yet - can't create audio adaptationset")
+        expect { period.build_audio_adaptationset }.to raise_error("Period is not persisted yet - can't create audio_adaptationset")
       end
     end
   end

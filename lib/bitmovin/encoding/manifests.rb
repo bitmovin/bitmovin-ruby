@@ -14,9 +14,9 @@ module Bitmovin::Encoding
   end
 end
 
+require 'bitmovin/encoding/manifests/audio_adaptation_set'
+require 'bitmovin/encoding/manifests/video_adaptation_set'
+require 'bitmovin/encoding/manifests/period'
 require 'bitmovin/encoding/manifests/dash_manifest'
 require 'bitmovin/encoding/manifests/hls_manifest'
-require 'bitmovin/encoding/manifests/video_adaptation_set'
-require 'bitmovin/encoding/manifests/audio_adaptation_set'
 require 'bitmovin/encoding/manifests/dash_representations'
-require 'bitmovin/encoding/manifests/period'

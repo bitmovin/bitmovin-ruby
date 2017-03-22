@@ -43,10 +43,12 @@ describe Bitmovin::Encoding::Manifests::DashManifest do
 
     describe "periods" do
       it "should fetch periods if not loaded yet" do
-        expect(subject).to receive(:load_periods)
+        allow(subject).to receive(:persisted?).and_return(true)
+        expect(subject).to receive(:load_periods).and_return([])
         subject.periods
       end
       it "should not reload periods if already loaded" do
+        allow(subject).to receive(:persisted?).and_return(true)
         expect(subject).to receive(:load_periods).exactly(1).and_return([])
         2.times { subject.periods }
       end
@@ -70,7 +72,7 @@ describe Bitmovin::Encoding::Manifests::DashManifest do
 
       it "should raise an error if dash manifest is not persisted" do
         manifest = Bitmovin::Encoding::Manifests::DashManifest.new
-        expect { manifest.periods }.to raise_error("Manifest is not persisted yet - can't load periods")
+        expect { manifest.periods }.to raise_error("DashManifest is not persisted yet - can't load periods")
       end
     end
 

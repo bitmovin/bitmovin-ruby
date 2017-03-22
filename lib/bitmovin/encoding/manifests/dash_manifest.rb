@@ -1,5 +1,6 @@
 module Bitmovin::Encoding::Manifests
   class DashManifest < Bitmovin::Resource
+    include Bitmovin::ChildCollection
     init("/v1/encoding/manifests/dash")
 
     def initialize(hash = {})
@@ -9,18 +10,9 @@ module Bitmovin::Encoding::Manifests
       @periods = nil
     end
 
-    attr_accessor :outputs, :manifest_name
-    def periods
-      if @periods.nil?
-        @periods = load_periods
-      end
-      @periods
-    end
+    child_collection(:periods, "/v1/encoding/manifests/dash/%s/periods", [:id], Period)
 
-    def build_period(hash = {})
-      period = Period.new(@id, hash) 
-      period
-    end
+    attr_accessor :outputs, :manifest_name
 
     def persisted?
       !@id.nil?
@@ -31,16 +23,6 @@ module Bitmovin::Encoding::Manifests
     end
 
     private
-    def load_periods
-      if !persisted?
-        raise "Manifest is not persisted yet - can't load periods"
-      end
-      path = File.join("/v1/encoding/manifests/dash", @id, "periods")
-      response = Bitmovin.client.get path
-      result(response)["items"].map do |period|
-        Period.new(@id, period)
-      end
-    end
 
     def collect_attributes
       val = Hash.new
