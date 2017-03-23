@@ -8,3 +8,5 @@
 /tmp/
 test.rb
 test-manifest.rb
+test_encoding.rb
+delete.rb

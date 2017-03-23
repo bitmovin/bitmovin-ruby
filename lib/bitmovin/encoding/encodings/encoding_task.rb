@@ -32,6 +32,31 @@ module Bitmovin::Encoding::Encodings
       [:@stream_list, :@muxing_list]
     end
 
+    def save!
+      super
+      @stream_list = StreamList.new(@id)
+      @muxing_list = MuxingList.new(@id)
+    end
+
+    def start!(hsh = {})
+      path = File.join("/v1/encoding/encodings/", @id, "start")
+      Bitmovin.client.post(path, camelize_hash(hsh))
+    end
+
+    def full_status
+      path = File.join("/v1/encoding/encodings/", @id, "status")
+      response = Bitmovin.client.get(path)
+      hash_to_struct(result(response))
+    end
+
+    def status
+      full_status.status
+    end
+
+    def progress
+      full_status.progress
+    end
+
     def self.list(limit = 100, offset = 0)
       response = Bitmovin.client.get("/v1/encoding/encodings", { limit: limit, offset: offset })
       Bitmovin::Helpers.result(response)['items'].map do |item|

@@ -10,7 +10,7 @@ module Bitmovin::Encoding::Manifests
       @periods = nil
     end
 
-    child_collection(:periods, "/v1/encoding/manifests/dash/%s/periods", [:id], Period)
+    child_collection(:periods, "/v1/encoding/manifests/dash/%s/periods", [:id], Bitmovin::Encoding::Manifests::Period)
 
     attr_accessor :outputs, :manifest_name
 
@@ -20,6 +20,25 @@ module Bitmovin::Encoding::Manifests
 
     def reload!
       @periods = nil
+    end
+
+    def start!
+      path = File.join("/v1/encoding/manifests/dash/", @id, "start")
+      Bitmovin.client.post(path)
+    end
+
+    def full_status
+      path = File.join("/v1/encoding/manifests/dash/", @id, "status")
+      response = Bitmovin.client.get(path)
+      hash_to_struct(result(response))
+    end
+
+    def status
+      full_status.status
+    end
+
+    def progress
+      full_status.progress
     end
 
     private

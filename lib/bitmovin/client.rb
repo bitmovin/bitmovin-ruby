@@ -16,6 +16,7 @@ module Bitmovin
         faraday.request :json
         #faraday.response :logger
         faraday.adapter :httpclient
+        faraday.response :raise_error
       end
     end
 
