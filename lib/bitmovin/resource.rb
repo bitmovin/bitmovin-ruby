@@ -1,4 +1,3 @@
-require 'pry'
 module Bitmovin
   class Resource
     include Bitmovin::Helpers
