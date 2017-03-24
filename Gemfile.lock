@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bitmovin-ruby (0.1.1)
+    bitmovin-ruby (0.2.0)
       activesupport (~> 5.0.2, >= 5.0.2)
       faraday (~> 0.11.0)
       faraday_middleware (~> 0.11.0)
