@@ -1,4 +1,4 @@
-require_relative '../lib/bitmovin'
+require 'bitmovin-ruby'
 
 # CONFIGURATION
 BITMOVIN_API_KEY = "YOUR API KEY HERE"
@@ -14,22 +14,33 @@ OUTPUT_AWS_SECRET_KEY = "YOUR AWS_SECRET_KEY"
 
 Bitmovin.init(BITMOVIN_API_KEY)
 
+
+# This will create a Input Bucket you can reuse in future encodings
+# To get a list of all your S3Inputs do:
+# Bitmovin::Encoding::Inputs::S3Input.list
+
 s3_input = Bitmovin::Encoding::Inputs::S3Input.new({
   accessKey: AWS_ACCESS_KEY,
   secretKey: AWS_SECRET_KEY,
   bucketName: BUCKET_NAME
 }).save!
+
+# This will create a Output Bucket you can reuse in future encodings
+# To get a list of all your Output do:
+# Bitmovin::Encoding::Outputs::S3Output.list
 s3_output = Bitmovin::Encoding::Outputs::S3Output.new({
   accessKey: OUTPUT_AWS_ACCESS_KEY,
   secretKey: OUTPUT_AWS_SECRET_KEY,
   bucketName: BUCKET_NAME
 }).save!
 
-enc = Bitmovin::Encoding::Encodings::EncodingTask.new({
-  name: "VOD Encoding Ruby"
-})
-enc.save!
 
+# Please note inputs/outputs are not individual files but rather the 
+# Bucket you are reading/writing files to and they can be reused between encodings.
+
+
+# Codec Configurations are similar to Inputs/Outputs in that they are configured once
+# and can be reused for future encodings. 
 codec_config_720_700 = Bitmovin::Encoding::CodecConfigurations::H264Configuration.new({
   name: "H264 1280x720 700kb/s",
   profile: "MAIN",
@@ -62,6 +73,21 @@ audio_config = Bitmovin::Encoding::CodecConfigurations::AacConfiguration.new({
 })
 audio_config.save!
 
+
+
+
+
+
+
+# The actual instance of the encoding task you are about to start
+enc = Bitmovin::Encoding::Encodings::EncodingTask.new({
+  name: "VOD Encoding Ruby",
+  cloud_region: "AWS_AP_SOUTHEAST_1"
+})
+enc.save!
+
+# Stream Configuration
+
 stream_720_700 = enc.streams.build(name: 'H264 1280x720 700kb/s')
 stream_720_700.codec_configuration = codec_config_720_700
 stream_720_700.build_input_stream(input_path: INPUT_FILE_PATH, input_id: s3_input.id, selection_mode: 'AUTO')
@@ -81,6 +107,8 @@ stream_aac = enc.streams.build(name: 'audio stream')
 stream_aac.codec_configuration = audio_config
 stream_aac.build_input_stream(input_path: INPUT_FILE_PATH, input_id: s3_input.id, selection_mode: 'AUTO')
 stream_aac.save!
+
+# Muxing Configuration
 
 fmp4_muxing_720_700 = enc.muxings.fmp4.build(name: 'H264 1280x720 700kb/s', segment_length: 4)
 fmp4_muxing_720_700.build_output({
@@ -114,6 +142,8 @@ audio_muxing.build_output({
 audio_muxing.streams << stream_aac.id
 audio_muxing.save!
 
+
+# Starting an encoding and monitoring it's status
 enc.start!
 
 while(enc.status != 'FINISHED')
@@ -128,7 +158,7 @@ puts "Encoding finished!"
 
 
 
-# Manifests
+# Generating a DASH Manifest
 
 puts "Starting Manifest generation"
 manifest = Bitmovin::Encoding::Manifests::DashManifest.new({
