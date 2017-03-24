@@ -9,7 +9,7 @@ end
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 require "webmock/rspec"
 require "pry"
-require "bitmovin"
+require "bitmovin-ruby"
 require "rspec"
 require "rspec/collection_matchers"
 
