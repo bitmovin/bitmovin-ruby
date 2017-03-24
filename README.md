@@ -23,9 +23,9 @@ Or install it yourself as:
 
     $ gem install bitmovin-ruby
 
-## Usage
+## Examples
 
-TODO: Write usage instructions here
+Please check out our examples at [examples](https://github.com/bitmovin/bitmovin-ruby/tree/develop/examples).
 
 ## Development
 
