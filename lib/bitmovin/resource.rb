@@ -38,6 +38,7 @@ module Bitmovin
         post.url self.class.resource_path
         post.body = collect_attributes
       end
+      yield(response.body) if block_given?
       init_from_hash(result(response))
       self
     end

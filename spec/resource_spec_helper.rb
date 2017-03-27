@@ -110,7 +110,23 @@ def test_resource_methods(klass, path, resources)
               .to_return(body: response_envelope({ id: 'foo' }).to_json)
             expect(subject.save!).to have_requested(:post, /.*#{path}/).with(body: body.to_json)
           end
+
+          it "should call block with json response" do
+            resp = response_envelope({ id: 'foo' }).to_json
+            stub_request(:post, /.*#{path}/)
+              .with(body: body.to_json)
+              .to_return(body: resp)
+
+            called = false
+            callback = Proc.new do |f|
+              called = true
+              expect(f).to eq(resp)
+            end
+            subject.save!(&callback)
+            expect(called).to eq(called)
+          end
         end
+
         context "with id set" do
           subject { klass.new(resources[:item]) }
           it "should raise an error if id is set" do
