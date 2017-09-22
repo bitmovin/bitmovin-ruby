@@ -9,6 +9,7 @@ module Bitmovin::Encoding::Manifests
     end
 
     child_collection(:fmp4_representations, "/v1/encoding/manifests/dash/%s/periods/%s/adaptationsets/%s/representations/fmp4", [:manifest_id, :period_id, :id], Fmp4Representation)
+    child_collection(:drm_fmp4_representations, "/v1/encoding/manifests/dash/%s/periods/%s/adaptationsets/%s/representations/fmp4/drm", [:manifest_id, :period_id, :id], DrmFmp4Representation)
 
     attr_accessor :manifest_id
     attr_accessor :period_id

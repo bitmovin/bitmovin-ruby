@@ -2,6 +2,7 @@ module Bitmovin::Encoding::Manifests
   class ManifestResource < Bitmovin::Resource
     def initialize(hash = {})
       hsh = ActiveSupport::HashWithIndifferentAccess.new(underscore_hash(hash))
+      # FIXME
       muxing_type = self.class.name.demodulize.gsub(/(.*)Muxing/, '\1').downcase
       self.class.init(File.join("/v1/encoding/manifests/", encoding_id, "muxings", muxing_type))
       super(hsh)
