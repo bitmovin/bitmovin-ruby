@@ -11,3 +11,4 @@ test-manifest.rb
 test_encoding.rb
 delete.rb
 *.gem
+examples/*_customer.rb
