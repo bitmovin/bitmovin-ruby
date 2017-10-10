@@ -6,13 +6,19 @@ describe Bitmovin::Encoding::Encodings::MuxingList do
 
   [:fmp4, :ts, :mp4, :webm].each do |muxing|
     it { should respond_to(muxing) }
-    it "#{muxing} should return #{muxing.to_s.camelize}List" do
-      list = muxing_list.send(muxing)
-      expect(list).to be_a("Bitmovin::Encoding::Encodings::Muxings::#{muxing.to_s.camelize}MuxingList".constantize)
-    end
 
-    it "#{muxing} should have correct encoding_id" do
-      expect(muxing_list.send(muxing).encoding_id).to eq(muxing_list.encoding_id)
+    describe(muxing) do
+      subject { muxing_list.send(muxing) }
+      it "should have correct encoding_id" do
+        expect(subject.encoding_id).to eq(muxing_list.encoding_id)
+      end
+
+      it "#{muxing} should return #{muxing.to_s.camelize}List" do
+        expect(subject).to be_a("Bitmovin::Encoding::Encodings::Muxings::#{muxing.to_s.camelize}MuxingList".constantize)
+      end
+
+      it { should respond_to(:find).with(1).argument }
+      it { should respond_to(:list).with(0..2).arguments }
     end
   end
 
