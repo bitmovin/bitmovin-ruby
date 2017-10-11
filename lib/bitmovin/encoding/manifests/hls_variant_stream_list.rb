@@ -12,7 +12,11 @@ module Bitmovin::Encoding::Manifests
     def list(limit = 100, offset = 0)
       path = File.join("/v1/encoding/manifests/hls", @manifest_id, self.class.resource_path)
       response = Bitmovin.client.get(path, { limit: limit, offset: offset })
-      result(response)['items'].map { |item| self.class.klass.new(@encoding_id, item) }
+      result(response)['items'].map { |item| self.class.klass.new(@manifest_id, item) }
+    end
+
+    def build(hash = {})
+      HlsVariantStream.new(@manifest_id, hash)
     end
   end
 end
