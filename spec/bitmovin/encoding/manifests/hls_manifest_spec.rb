@@ -19,6 +19,8 @@ describe Bitmovin::Encoding::Manifests::HlsManifest do
 
     it { should respond_to(:streams) }
     it { should respond_to(:audio_media) }
+    it { should respond_to(:build_audio_media) }
+    it { should respond_to(:build_stream) }
 
     it { should respond_to(:start!) }
 
