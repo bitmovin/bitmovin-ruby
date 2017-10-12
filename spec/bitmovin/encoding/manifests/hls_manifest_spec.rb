@@ -18,7 +18,9 @@ describe Bitmovin::Encoding::Manifests::HlsManifest do
     it { should be_a(Bitmovin::Resource) }
 
     it { should respond_to(:streams) }
-    it { should respond_to(:media) }
+    it { should respond_to(:audio_media) }
+
+    it { should respond_to(:start!) }
 
     let(:output_json) { 
       {
@@ -31,22 +33,6 @@ describe Bitmovin::Encoding::Manifests::HlsManifest do
         ]
       }
     }
-
-    describe "streams" do
-      context "with unpersisted instance" do
-        subject { Bitmovin::Encoding::Manifests::HlsManifest.new }
-        it "should raise BitmovinError" do
-          expect { subject.streams }.to raise_error(BitmovinError)
-        end
-      end
-      context "with saved instance" do
-        subject { Bitmovin::Encoding::Manifests::HlsManifest.new(id: 'manifest-id') }
-        it "should return ManifestStreamList" do
-          expect(subject.streams).to be_a(Bitmovin::Encoding::Manifests::HlsVariantStreamList)
-          expect(subject.streams.manifest_id).to eq('manifest-id')
-        end
-      end
-    end
 
     describe "outputs" do
       let(:manifest) { Bitmovin::Encoding::Manifests::HlsManifest.new({ id: 'encoding-id',

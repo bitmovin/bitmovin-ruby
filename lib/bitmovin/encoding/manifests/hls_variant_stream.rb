@@ -13,7 +13,7 @@ module Bitmovin::Encoding::Manifests
     def initialize(manifest_id, hash = {})
       hsh = ActiveSupport::HashWithIndifferentAccess.new(underscore_hash(hash))
       @manifest_id = manifest_id
-      self.class.init(File.join("/v1/encoding/manifests/", manifest_id, "streams"))
+      self.class.init(File.join("/v1/encoding/manifests/hls/", manifest_id, "streams"))
       super(hsh)
     end
   end
