@@ -1,4 +1,4 @@
-# Bitmovin::Ruby API Client
+# [![bitmovin](http://bitmovin-a.akamaihd.net/webpages/bitmovin-logo-github.png)](http://www.bitmovin.com) Bitmovin::Ruby API Client
 [![codecov](https://codecov.io/gh/bitmovin/bitmovin-ruby/branch/develop/graph/badge.svg)](https://codecov.io/gh/bitmovin/bitmovin-ruby)
 [![Build Status](https://travis-ci.org/bitmovin/bitmovin-ruby.svg?branch=develop)](https://travis-ci.org/bitmovin/bitmovin-ruby)
 
