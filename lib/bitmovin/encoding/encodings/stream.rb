@@ -77,6 +77,9 @@ module Bitmovin::Encoding::Encodings
         json_name = ActiveSupport::Inflector.camelize(name.to_s, false)
         val[json_name] = instance_variable_get("@#{name}")
       end
+      if @conditions.nil?
+        val.delete("conditions")
+      end
       val
     end
     def validate!
