@@ -7,6 +7,24 @@ module Bitmovin::Encoding
         case item['type'].downcase
         when "s3"
           S3Input.new(item)
+        when "gcs"
+          GcsInput.new(item)
+        when "http"
+          HttpInput.new(item)
+        when "https"
+          HttpsInput.new(item)
+        when "aspera"
+          AsperaInput.new(item)
+        when "rtmp"
+          RtmpInput.new(item)
+        when "generic-s3"
+          GenericS3Input.new(item)
+        when "azure"
+          AzureInput.new(item)
+        when "ftp"
+          FtpInput.new(item)
+        when "sftp"
+          SftpInput.new(item)
         end
       end
       list
