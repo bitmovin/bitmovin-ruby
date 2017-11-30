@@ -34,5 +34,8 @@ describe Bitmovin::Encoding::StreamOutput do
     it "should be valid if all is set" do
       expect(subject).to be_valid
     end
+    it "should be serialized correctly to json" do
+      expect(subject.to_json(nil)).to eq("{\"outputId\":\"55354be6-0237-42bb-ae85-a2d4ef1ed19e\",\"outputPath\":\"/encodings/movies/movie-1/video_720/\",\"acl\":[{\"permission\":\"PUBLIC_READ\"}]}")
+    end
   end
 end

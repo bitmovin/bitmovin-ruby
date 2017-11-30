@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Bitmovin::Encoding::StreamOutput do
+describe Bitmovin::Webhooks::WebhookEncryption do
   let(:json) {
     {
         type: "AES",
@@ -27,7 +27,7 @@ describe Bitmovin::Encoding::StreamOutput do
       expect(subject).to be_valid
     end
     it "should be serialized correctly to json" do
-      expect(subject.to_json).to eq("{\"type\":\"AES\",\"key\":\"secretKey\"}")
+      expect(subject.to_json(nil)).to eq("{\"type\":\"AES\",\"key\":\"secretKey\"}")
     end
   end
 end

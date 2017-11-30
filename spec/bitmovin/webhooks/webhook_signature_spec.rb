@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Bitmovin::Encoding::StreamOutput do
+describe Bitmovin::Webhooks::WebhookSignature do
   let(:json) {
     {
         type: "HMAC",
@@ -27,7 +27,7 @@ describe Bitmovin::Encoding::StreamOutput do
       expect(subject).to be_valid
     end
     it "should be serialized correctly to json" do
-      expect(subject.to_json).to eq("{\"type\":\"HMAC\",\"key\":\"secretKey\"}")
+      expect(subject.to_json(nil)).to eq("{\"type\":\"HMAC\",\"key\":\"secretKey\"}")
     end
   end
 end
