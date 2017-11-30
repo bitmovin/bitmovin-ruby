@@ -456,17 +456,17 @@ finished_webhook = Bitmovin::Webhooks::Webhook.new(
     enc.id,
     'FINISHED',
     {
-      method: 'POST',
-      insecure_ssl: 'false',
-      url: 'http://httpbin.org/post',
-      encryption: Bitmovin::Webhooks::WebhookEncryption.new({
+        method: 'POST',
+        insecure_ssl: 'false',
+        url: 'http://httpbin.org/post',
+        encryption: Bitmovin::Webhooks::WebhookEncryption.new({
+                                                                  key: 'mySecretKey',
+                                                                  type: 'AES'
+                                                              }),
+        signature: Bitmovin::Webhooks::WebhookSignature.new({
                                                                 key: 'mySecretKey',
-                                                                type: 'AES'
-                                                            }),
-      signature: Bitmovin::Webhooks::WebhookSignature.new({
-                                                              key: 'mySecretKey',
-                                                              type: 'HMAC'
-                                                          })
+                                                                type: 'HMAC'
+                                                            })
     }
 )
 
@@ -493,34 +493,34 @@ hls_manifests.each do |hls_manifest|
 
   hls_manifest.start!
 
-    while hls_manifest.status != 'FINISHED' && hls_manifest.status != 'ERROR'
-      puts "HLS Manifest status is #{hls_manifest.status}"
-      progress = hls_manifest.progress
-      if progress > 0
-        puts "Progress: #{hls_manifest.progress} %"
-      end
-      sleep 2
+  while hls_manifest.status != 'FINISHED' && hls_manifest.status != 'ERROR'
+    puts "HLS Manifest status is #{hls_manifest.status}"
+    progress = hls_manifest.progress
+    if progress > 0
+      puts "Progress: #{hls_manifest.progress} %"
     end
+    sleep 2
+  end
 
-    puts "HLS Manifest generation #{hls_manifest.name} finished with status #{hls_manifest.status}"
+  puts "HLS Manifest generation #{hls_manifest.name} finished with status #{hls_manifest.status}"
 
 end
 
 # Begin DASH manifests generation
 dash_manifests.each do |dash_manifest|
 
-    dash_manifest.start!
+  dash_manifest.start!
 
-    while dash_manifest.status != 'FINISHED' && dash_manifest.status != 'ERROR'
-      puts "DASH manifest generation status is #{dash_manifest.status}"
-      progress = dash_manifest.progress
-      if progress > 0
-        puts "Progress: #{dash_manifest.progress}"
-      end
-      sleep 2
+  while dash_manifest.status != 'FINISHED' && dash_manifest.status != 'ERROR'
+    puts "DASH manifest generation status is #{dash_manifest.status}"
+    progress = dash_manifest.progress
+    if progress > 0
+      puts "Progress: #{dash_manifest.progress}"
     end
+    sleep 2
+  end
 
-    puts "DASH Manifest generation #{dash_manifest.name} finished with status #{dash_manifest.status}"
+  puts "DASH Manifest generation #{dash_manifest.name} finished with status #{dash_manifest.status}"
 end
 
 puts 'All Manifests generated!'

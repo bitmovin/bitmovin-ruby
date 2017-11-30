@@ -36,6 +36,7 @@ module Bitmovin::Webhooks
       end
       val
     end
+
     def validate!
       @errors << "type cannot be blank" if @type.blank?
       @errors << "key cannot be blank" if @key.blank?
