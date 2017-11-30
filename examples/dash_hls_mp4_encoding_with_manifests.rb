@@ -256,12 +256,13 @@ multi_codec_dash_manifest = Bitmovin::Encoding::Manifests::DashManifest.new({
                                                                                 name: 'MULTI CODEC DASH Manifest',
                                                                                 description: 'MULTI CODEC DASH Manifest',
                                                                                 manifest_name: 'multi_codec_manifest.mpd'
-                                                                            }).save!
+                                                                            })
 
 multi_codec_dash_manifest.outputs << Bitmovin::Encoding::StreamOutput.new({
                                                                               output_id: s3_output.id,
                                                                               output_path: OUTPUT_PATH
                                                                           })
+multi_codec_dash_manifest.save!
 
 multi_codec_period = Bitmovin::Encoding::Manifests::Period.new(
     multi_codec_dash_manifest.id
