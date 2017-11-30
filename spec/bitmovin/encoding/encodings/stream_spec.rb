@@ -42,6 +42,8 @@ describe Bitmovin::Encoding::Encodings::Stream do
   it { should respond_to(:codec_configuration) }
   it { should respond_to(:create_quality_meta_data) }
 
+  it { should respond_to(:conditions) }
+
   it { should respond_to(:save!) }
   it { should respond_to(:delete!) }
 
@@ -285,6 +287,24 @@ describe Bitmovin::Encoding::Encodings::Stream do
       stub_request(:post, /.*#{"/v1/encoding/encodings/#{stream.encoding_id}/streams"}/)
         .with(body: body)
         .to_return(body: response_envelope({id: 'test'}).to_json)
+    end
+
+    it "should not send conditions if not set" do
+      body.delete(:conditions)
+      stub_request(:post, /.*#{"/v1/encoding/encodings/#{stream.encoding_id}/streams"}/)
+        .with(body: body)
+        .to_return(body: response_envelope({id: 'test'}).to_json)
+      subject.id = nil
+      expect(subject.save!).to have_requested(:post, /.*#{"/v1/encoding/encodings/#{stream.encoding_id}/streams"}/).with(body: body)
+    end
+    it "should send conditions if a value is set" do
+      body["conditions"] = { some: "condition" }
+      stub_request(:post, /.*#{"/v1/encoding/encodings/#{stream.encoding_id}/streams"}/)
+        .with(body: body)
+        .to_return(body: response_envelope({id: 'test'}).to_json)
+      subject.id = nil
+      subject.conditions = { some: "condition" }
+      expect(subject.save!).to have_requested(:post, /.*#{"/v1/encoding/encodings/#{stream.encoding_id}/streams"}/).with(body: body)
     end
 
     it "should call POST /v1/encoding/encodings/<encoding-id>/streams with correct body" do

@@ -2,6 +2,7 @@ module Bitmovin::Encoding::Encodings
   class Stream < Bitmovin::Resource
     attr_accessor :encoding_id
     attr_accessor :id
+    attr_accessor :conditions
 
     def initialize(encoding_id, hash = {})
       set_defaults
@@ -13,6 +14,7 @@ module Bitmovin::Encoding::Encodings
       @input_streams = (hsh[:input_streams] || []).map { |input| StreamInput.new(@encoding_id, @id, input) }
 
       @errors = []
+      @conditions = nil
     end
 
     attr_accessor :name, :description, :created_at, :modified_at, :create_quality_meta_data
@@ -71,9 +73,12 @@ module Bitmovin::Encoding::Encodings
     def collect_attributes
       val = Hash.new
       [:name, :description, :create_quality_meta_data,
-      :input_streams, :outputs, :codec_config_id].each do |name|
+      :input_streams, :outputs, :codec_config_id, :conditions].each do |name|
         json_name = ActiveSupport::Inflector.camelize(name.to_s, false)
         val[json_name] = instance_variable_get("@#{name}")
+      end
+      if @conditions.nil?
+        val.delete("conditions")
       end
       val
     end

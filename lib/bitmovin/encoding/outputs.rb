@@ -7,6 +7,8 @@ module Bitmovin::Encoding
         case item['type'].downcase
         when "s3"
           S3Output.new(item)
+        when "gcs"
+          GcsOutput.new(item)
         end
       end
       list
