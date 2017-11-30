@@ -16,6 +16,7 @@ require 'bitmovin/input_resource'
 require 'bitmovin/configuration_resource'
 require 'bitmovin/client'
 require 'bitmovin/encoding'
+require 'bitmovin/webhooks'
 
 module Bitmovin
   @@client = nil
