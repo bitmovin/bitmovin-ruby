@@ -69,17 +69,17 @@ audio_config = Bitmovin::Encoding::CodecConfigurations::AacConfiguration.new({
 audio_config.save!
 
 # Adding Audio Stream to Encoding
-stream_aac = enc.streams.build(name: 'audio stream')
-stream_aac.codec_configuration = audio_config
-stream_aac.build_input_stream(input_path: INPUT_FILE_PATH, input_id: s3_input.id, selection_mode: 'AUTO')
-stream_aac.conditions = {
+audio_stream = enc.streams.build(name: 'audio stream')
+audio_stream.codec_configuration = audio_config
+audio_stream.build_input_stream(input_path: INPUT_FILE_PATH, input_id: s3_input.id, selection_mode: 'AUTO')
+audio_stream.conditions = {
     type: 'CONDITION',
     attribute: 'INPUTSTREAM',
     operator: '==',
     value: 'TRUE'
 }
-puts stream_aac.conditions.to_json
-stream_aac.save!
+puts audio_stream.conditions.to_json
+audio_stream.save!
 
 # Audio Muxing
 audio_muxing = enc.muxings.fmp4.build(name: 'audio-muxing', segment_length: 4)
@@ -94,7 +94,7 @@ audio_muxing.build_output({
                                         permission: 'PUBLIC_READ'
                                     }]
                           })
-audio_muxing.streams << stream_aac.id
+audio_muxing.streams << audio_stream.id
 audio_muxing.save!
 
 # Let's also start the Manifest generation
@@ -116,7 +116,7 @@ multi_hls_manifest.build_audio_medium({
                                           group_id: 'audio_group',
                                           segment_path: 'audio/aac',
                                           encoding_id: enc.id,
-                                          stream_id: stream_aac.id,
+                                          stream_id: audio_stream.id,
                                           muxing_id: audio_muxing.id,
                                           language: 'en',
                                           uri: 'audio_media.m3u8'
@@ -140,7 +140,7 @@ h264_hls_manifest.build_audio_medium({
                                          group_id: 'audio_group',
                                          segment_path: 'audio/aac',
                                          encoding_id: enc.id,
-                                         stream_id: stream_aac.id,
+                                         stream_id: audio_stream.id,
                                          muxing_id: audio_muxing.id,
                                          language: 'en',
                                          uri: 'audio_media.m3u8'
@@ -163,7 +163,7 @@ h265_hls_manifest.build_audio_medium({
                                          group_id: 'audio_group',
                                          segment_path: 'audio/aac',
                                          encoding_id: enc.id,
-                                         stream_id: stream_aac.id,
+                                         stream_id: audio_stream.id,
                                          muxing_id: audio_muxing.id,
                                          language: 'en',
                                          uri: 'audio_media.m3u8'
@@ -294,12 +294,26 @@ audio_adaptation_set.build_fmp4_representation({
 
 dash_manifests = [multi_codec_dash_manifest, h264_dash_manifest, h265_dash_manifest]
 
+def create_mp4(streams, name, enc, s3_output)
+  mp4_muxing = enc.muxings.mp4.build(name: "MP4 #{name} muxing", filename: "#{name}.mp4")
+  mp4_muxing.streams << streams.map {|stream| stream.id}
+  mp4_muxing.streams.flatten!
+  mp4_muxing.build_output({
+                              output_id: s3_output.id,
+                              output_path: File.join(OUTPUT_PATH, name),
+                              acl: [{
+                                        permission: 'PUBLIC_READ'
+                                    }]
+                          })
+
+  mp4_muxing.save!
+  puts "Added MP4 muxing #{mp4_muxing.name}"
+end
+
 # Adding Video Streams to Encoding
 video_configs.each do |config|
 
-  if config[:name].start_with?('mp4')
-    video_config_type = 'MP4'
-  elsif config[:name].start_with?('h264')
+  if config[:name].start_with?('h264')
     video_config_type = 'H264'
   elsif config[:name].start_with?('h265')
     video_config_type = 'H265'
@@ -307,7 +321,7 @@ video_configs.each do |config|
     video_config_type = 'NONE'
   end
 
-  if video_config_type == 'MP4' || video_config_type == 'H264'
+  if video_config_type == 'H264'
     codec_config = Bitmovin::Encoding::CodecConfigurations::H264Configuration.new(config).save!
     config = OpenStruct.new(config)
 
@@ -322,64 +336,48 @@ video_configs.each do |config|
     }
     str.save!
 
-    if video_config_type == 'MP4'
-      mp4_muxing = enc.muxings.mp4.build(name: "#{codec_config.name} muxing", filename: "#{codec_config.name}.mp4")
-      mp4_muxing.streams << str.id
-      mp4_muxing.build_output({
-                                  output_id: s3_output.id,
-                                  output_path: File.join(OUTPUT_PATH, config.name),
-                                  acl: [{
-                                            permission: 'PUBLIC_READ'
-                                        }]
-                              })
+    create_mp4([str, audio_stream], codec_config.name, enc, s3_output)
 
-      mp4_muxing.save!
-      puts "Added MP4 muxing #{mp4_muxing.name}"
-    end
+    fmp4_muxing = enc.muxings.fmp4.build(name: "#{codec_config.name} muxing", segment_length: 4)
+    fmp4_muxing.streams << str.id
+    fmp4_muxing.build_output({
+                                 output_id: s3_output.id,
+                                 output_path: File.join(OUTPUT_PATH, config.name),
+                                 acl: [{
+                                           permission: 'PUBLIC_READ'
+                                       }]
+                             })
+    fmp4_muxing.save!
+    puts "Added FMP4 muxing #{fmp4_muxing.name}"
 
-    if video_config_type == 'H264'
-      fmp4_muxing = enc.muxings.fmp4.build(name: "#{codec_config.name} muxing", segment_length: 4)
-      fmp4_muxing.streams << str.id
-      fmp4_muxing.build_output({
-                                   output_id: s3_output.id,
-                                   output_path: File.join(OUTPUT_PATH, config.name),
-                                   acl: [{
-                                             permission: 'PUBLIC_READ'
-                                         }]
-                               })
-      fmp4_muxing.save!
-      puts "Added FMP4 muxing #{fmp4_muxing.name}"
+    h264_video_adaptation_set.build_fmp4_representation(
+        encoding_id: enc.id,
+        muxing_id: fmp4_muxing.id,
+        type: 'TEMPLATE',
+        segment_path: config.name
+    ).save!
+    puts "Added muxing #{fmp4_muxing.name} to #{video_config_type} only DASH manifest"
 
-      h264_video_adaptation_set.build_fmp4_representation(
-          encoding_id: enc.id,
-          muxing_id: fmp4_muxing.id,
-          type: 'TEMPLATE',
-          segment_path: config.name
-      ).save!
-      puts "Added muxing #{fmp4_muxing.name} to #{video_config_type} only DASH manifest"
+    multi_h264_adaptation_set.build_fmp4_representation(
+        encoding_id: enc.id,
+        muxing_id: fmp4_muxing.id,
+        type: 'TEMPLATE',
+        segment_path: config.name
+    ).save!
+    puts "Added muxing #{fmp4_muxing.name} to multi codec DASH manifest"
 
-      multi_h264_adaptation_set.build_fmp4_representation(
-          encoding_id: enc.id,
-          muxing_id: fmp4_muxing.id,
-          type: 'TEMPLATE',
-          segment_path: config.name
-      ).save!
-      puts "Added muxing #{fmp4_muxing.name} to multi codec DASH manifest"
+    h264_hls_manifest.build_stream({
+                                       audio: 'audio_group',
+                                       closed_captions: 'NONE',
+                                       segmentPath: config.name,
+                                       encoding_id: enc.id,
+                                       muxing_id: fmp4_muxing.id,
+                                       stream_id: str.id,
+                                       uri: config.name + '.m3u8'
+                                   }).save!
 
-      h264_hls_manifest.build_stream({
-                                         audio: 'audio_group',
-                                         closed_captions: 'NONE',
-                                         segmentPath: config.name,
-                                         encoding_id: enc.id,
-                                         muxing_id: fmp4_muxing.id,
-                                         stream_id: str.id,
-                                         uri: config.name + '.m3u8'
-                                     }).save!
-
-      puts "Added muxing #{fmp4_muxing.name} to #{video_config_type} HLS manifest"
-    end
-    next
-  elsif video_config_type == 'H265'
+    puts "Added muxing #{fmp4_muxing.name} to #{video_config_type} HLS manifest"
+  else
     codec_config = Bitmovin::Encoding::CodecConfigurations::H265Configuration.new(config)
     codec_config.save!
     config = OpenStruct.new(config)
@@ -394,6 +392,8 @@ video_configs.each do |config|
         value: codec_config.height
     }
     str.save!
+
+    create_mp4([str, audio_stream], codec_config.name, enc, s3_output)
 
     fmp4_muxing = enc.muxings.fmp4.build(name: "#{codec_config.name} muxing", segment_length: 4)
     fmp4_muxing.streams << str.id
@@ -434,8 +434,6 @@ video_configs.each do |config|
                                    }).save!
 
     puts "Added muxing #{fmp4_muxing.name} to #{video_config_type} HLS manifest"
-  else
-    next
   end
 
   # Add the Stream to the multi codec HLS Manifest
