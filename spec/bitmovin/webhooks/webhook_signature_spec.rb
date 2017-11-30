@@ -26,5 +26,8 @@ describe Bitmovin::Encoding::StreamOutput do
     it "should be valid if all is set" do
       expect(subject).to be_valid
     end
+    it "should be serialized correctly to json" do
+      expect(subject.to_json).to eq("{\"type\":\"HMAC\",\"key\":\"secretKey\"}")
+    end
   end
 end

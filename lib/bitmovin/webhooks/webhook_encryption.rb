@@ -22,8 +22,8 @@ module Bitmovin::Webhooks
       @errors
     end
 
-    def to_json(args)
-      collect_attributes.to_json(args)
+    def to_json
+      collect_attributes.to_json
     end
 
     private
