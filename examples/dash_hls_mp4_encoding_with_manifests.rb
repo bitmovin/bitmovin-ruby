@@ -452,9 +452,7 @@ video_configs.each do |config|
 end
 
 # Adding finished webhook to encoding
-finished_webhook = Bitmovin::Webhooks::Webhook.new(
-    enc.id,
-    'FINISHED',
+finished_webhook = Bitmovin::Webhooks::EncodingFinishedWebhook.new(
     {
         method: 'POST',
         insecure_ssl: 'false',
