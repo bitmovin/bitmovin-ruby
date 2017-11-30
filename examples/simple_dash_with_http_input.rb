@@ -11,6 +11,10 @@ BUCKET_NAME = 'YOUR BUCKET NAME HERE'
 OUTPUT_PATH = 'path/to/output'
 MPD_NAME = 'manifest.mpd'
 
+# Please refer to our API spec to get available cloud regions
+# https://bitmovin.com/encoding-documentation/bitmovin-api/#/reference/encoding/encodings/create-encoding
+ENCODING_CLOUD_REGION = 'GOOGLE_EUROPE_WEST_1'
+
 Bitmovin.init(BITMOVIN_API_KEY)
 
 # This will create a http input
@@ -73,7 +77,7 @@ audio_config.save!
 # The actual instance of the encoding task you are about to start
 enc = Bitmovin::Encoding::Encodings::EncodingTask.new({
                                                           name: 'VOD Encoding Ruby',
-                                                          cloud_region: 'AWS_AP_SOUTHEAST_1'
+                                                          cloud_region: ENCODING_CLOUD_REGION
                                                       })
 enc.save!
 
