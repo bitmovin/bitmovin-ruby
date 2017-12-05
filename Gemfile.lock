@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bitmovin-ruby (0.3.0)
+    bitmovin-ruby (0.4.0)
       activesupport (>= 4.0.0)
       faraday (~> 0.11.0)
       faraday_middleware (~> 0.11.0)
@@ -123,4 +123,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.14.6
+   1.15.1
