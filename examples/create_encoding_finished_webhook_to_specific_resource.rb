@@ -3,7 +3,7 @@ require '../lib/bitmovin-ruby'
 Bitmovin.init("YOUR API KEY")
 
 # Adding finished webhook to encoding
-finished_webhook = Bitmovin::Webhooks::EncodingFinishedWebhook.new({
+finished_webhook = Bitmovin::Webhooks::EncodingFinishedWebhook.new('ENCODING_ID', {
         method: 'POST',
         insecure_ssl: 'false',
         url: 'http://httpbin.org/post',
