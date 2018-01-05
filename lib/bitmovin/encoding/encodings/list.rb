@@ -6,7 +6,6 @@ module Bitmovin::Encoding::Encodings
       def init(path, klass)
         @resource_path = path
         @klass = klass
-        @items = []
       end
       attr_reader :resource_path
       attr_reader :klass
@@ -16,6 +15,7 @@ module Bitmovin::Encoding::Encodings
     attr_accessor :encoding_id
     def initialize(encoding_id)
       @encoding_id = encoding_id
+      @items = []
     end
 
     def list(limit = 100, offset = 0)
