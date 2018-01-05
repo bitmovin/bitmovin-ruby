@@ -29,7 +29,9 @@ module Bitmovin::Encoding::Encodings
     end
 
     def build(hash = {})
-      @items << self.class.klass.new(@encoding_id, hash)
+      stream = self.class.klass.new(@encoding_id, hash)
+      @items << stream
+      stream
     end
 
     def find(id)
