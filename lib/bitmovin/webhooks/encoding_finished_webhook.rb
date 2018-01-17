@@ -1,7 +1,7 @@
 module Bitmovin::Webhooks
   class EncodingFinishedWebhook < WebhookResource
     init 'notifications/webhooks/encoding/encodings/finished'
-    def initialize(encoding_id, hash = {})
+    def initialize(encoding_id = {}, hash = {})
       if encoding_id.kind_of?(String)
         @encoding_id = encoding_id
         self.class.init("notifications/webhooks/encoding/encodings/#{encoding_id}/finished")
