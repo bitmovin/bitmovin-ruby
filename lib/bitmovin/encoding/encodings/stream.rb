@@ -69,6 +69,18 @@ module Bitmovin::Encoding::Encodings
       @errors
     end
 
+    def input_details
+      path = File.join("/v1/encoding/encodings/", @encoding_id, "streams", @id, "input")
+      response = Bitmovin.client.get(path)
+      hash_to_struct(result(response))
+    end
+
+    def input_analysis
+      path = File.join("/v1/encoding/encodings/", @encoding_id, "streams", @id, "inputs")
+      response = Bitmovin.client.get(path)
+      hash_to_struct(result(response))
+    end
+
     private
     def collect_attributes
       val = Hash.new
