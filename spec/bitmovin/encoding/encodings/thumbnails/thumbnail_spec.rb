@@ -20,6 +20,10 @@ describe Bitmovin::Encoding::Encodings::Thumbnail do
   subject { thumbnail }
   it { should respond_to(:valid?) }
   it { should respond_to(:invalid?) }
+  it { should respond_to(:outputs) }
+  it { should respond_to(:unit) }
+  it { should respond_to(:pattern) }
+  it { should respond_to(:height) }
   it { should respond_to(:positions) }
   it { should respond_to(:errors) }
 
@@ -76,6 +80,16 @@ describe Bitmovin::Encoding::Encodings::Thumbnail do
                              output_id: '',
                              output_path: File.join('your/output/path/', 'thumbnails')
                          })]
+      expect(subject).to be_invalid
+    end
+
+    it 'should be invalid without pattern set' do
+      subject.pattern = nil
+      expect(subject).to be_invalid
+    end
+
+    it 'should be invalid with blank pattern set' do
+      subject.pattern = '   '
       expect(subject).to be_invalid
     end
 

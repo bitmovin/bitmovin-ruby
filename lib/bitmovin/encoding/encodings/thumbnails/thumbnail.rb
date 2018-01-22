@@ -52,8 +52,8 @@ module Bitmovin::Encoding::Encodings
         @errors << 'The height has to be set and must be greater than 0'
       end
 
-      if @pattern.nil? || @pattern.empty?
-        @errors << 'The pattern has to be set'
+      if @pattern.nil? || @pattern.blank?
+        @errors << 'The pattern has to be set and must not be blank'
       end
 
       unless ['SECONDS', 'PERCENTS', nil].include? @unit
