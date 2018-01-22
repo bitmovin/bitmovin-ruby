@@ -36,6 +36,7 @@ module Bitmovin::Encoding
       end
       val
     end
+
     def validate!
       @errors << "output_id cannot be blank" if @output_id.blank?
       @errors << "output_path cannot be blank" if @output_path.blank?
