@@ -9,17 +9,19 @@ module Bitmovin::Encoding::Encodings
       end
       attr_reader :resource_path
       attr_reader :klass
+      attr_reader :items
     end
 
     attr_accessor :encoding_id
     def initialize(encoding_id)
       @encoding_id = encoding_id
+      @items = []
     end
 
     def list(limit = 100, offset = 0)
       path = File.join("/v1/encoding/encodings/", @encoding_id, self.class.resource_path)
       response = Bitmovin.client.get(path, { limit: limit, offset: offset })
-      result(response)['items'].map { |item| self.class.klass.new(@encoding_id, item) }
+      @items = result(response)['items'].map { |item| self.class.klass.new(@encoding_id, item) }
     end
 
     def add(stream)
@@ -27,7 +29,9 @@ module Bitmovin::Encoding::Encodings
     end
 
     def build(hash = {})
-      self.class.klass.new(@encoding_id, hash)
+      stream = self.class.klass.new(@encoding_id, hash)
+      @items << stream
+      stream
     end
 
     def find(id)
