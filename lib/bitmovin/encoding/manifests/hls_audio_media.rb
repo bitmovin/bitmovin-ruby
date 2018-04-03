@@ -1,20 +1,20 @@
 module Bitmovin::Encoding::Manifests
   class HlsAudioMedia < Bitmovin::Resource
     attr_accessor :manifest_id
-    attr_accessor :groupId
+    attr_accessor :group_id
     attr_accessor :language
-    attr_accessor :assocLanguage
+    attr_accessor :assoc_language
     attr_accessor :name
-    attr_accessor :isDefault
+    attr_accessor :is_default
     attr_accessor :autoselect
     attr_accessor :characteristics
-    attr_accessor :segmentPath
-    attr_accessor :encodingId
-    attr_accessor :streamId
-    attr_accessor :muxingId
-    attr_accessor :drmId
-    attr_accessor :startSegmentNumber
-    attr_accessor :endSegmentNumber
+    attr_accessor :segment_path
+    attr_accessor :encoding_id
+    attr_accessor :stream_id
+    attr_accessor :muxing_id
+    attr_accessor :drm_id
+    attr_accessor :start_segment_number
+    attr_accessor :end_segment_number
     attr_accessor :uri
 
     def initialize(manifest_id, hash = {})
@@ -23,5 +23,10 @@ module Bitmovin::Encoding::Manifests
       self.class.init(File.join("/v1/encoding/manifests/hls/", manifest_id, "media/audio"))
       super(hsh)
     end
+
+    def ignore_fields
+      return [:@manifest_id, :@id]
+    end
+
   end
 end
