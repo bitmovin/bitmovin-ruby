@@ -10,7 +10,11 @@ module Bitmovin::Helpers
   def camelize_hash(hash)
     ret = Hash.new
     hash.each do |key, value|
-      ret[ActiveSupport::Inflector.camelize(key, false)] = value
+      if value.is_a?(Hash)
+        ret[ActiveSupport::Inflector.camelize(key, false)] = camelize_hash(value)
+      else
+        ret[ActiveSupport::Inflector.camelize(key, false)] = value
+      end
     end
     ret
   end
