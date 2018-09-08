@@ -3,6 +3,7 @@ module Bitmovin::Encoding::Encodings
     attr_accessor :encoding_id
     attr_accessor :id
     attr_accessor :conditions
+    attr_accessor :mode
 
     def initialize(encoding_id, hash = {})
       set_defaults
@@ -15,6 +16,7 @@ module Bitmovin::Encoding::Encodings
 
       @errors = []
       @conditions = nil
+      @mode = "STANDARD"
     end
 
     attr_accessor :name, :description, :created_at, :modified_at, :create_quality_meta_data
@@ -85,7 +87,7 @@ module Bitmovin::Encoding::Encodings
     def collect_attributes
       val = Hash.new
       [:name, :description, :create_quality_meta_data,
-      :input_streams, :outputs, :codec_config_id, :conditions].each do |name|
+      :input_streams, :outputs, :codec_config_id, :conditions, :mode].each do |name|
         json_name = ActiveSupport::Inflector.camelize(name.to_s, false)
         val[json_name] = instance_variable_get("@#{name}")
       end
