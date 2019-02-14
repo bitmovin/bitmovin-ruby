@@ -22,6 +22,10 @@ module Bitmovin
       end
     end
 
+    def init_instance(path)
+      @instance_resource_path = path
+    end
+
     attr_accessor :id, :name, :description, :created_at, :modified_at
 
 
@@ -34,8 +38,10 @@ module Bitmovin
         raise BitmovinError.new(self), "Cannot save already persisted resource"
       end
 
+      path = @instance_resource_path.nil? ? self.class.resource_path : @instance_resource_path
+
       response = Bitmovin.client.post do |post|
-        post.url self.class.resource_path
+        post.url path
         post.body = collect_attributes
       end
       yield(response.body) if block_given?
