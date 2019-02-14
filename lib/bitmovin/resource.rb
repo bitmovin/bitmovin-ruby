@@ -38,10 +38,8 @@ module Bitmovin
         raise BitmovinError.new(self), "Cannot save already persisted resource"
       end
 
-      path = @instance_resource_path.nil? ? self.class.resource_path : @instance_resource_path
-
       response = Bitmovin.client.post do |post|
-        post.url path
+        post.url resource_path
         post.body = collect_attributes
       end
       yield(response.body) if block_given?
@@ -54,7 +52,7 @@ module Bitmovin
     end
 
     def delete!
-      Bitmovin.client.delete File.join(self.class.resource_path, @id)
+      Bitmovin.client.delete File.join(resource_path, @id)
     end
 
     def inspect
@@ -62,6 +60,10 @@ module Bitmovin
     end
 
     private
+
+    def resource_path
+      @instance_resource_path || self.class.resource_path
+    end
 
     def init_from_hash(hash = {})
       hash.each do |name, value|
