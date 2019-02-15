@@ -25,6 +25,7 @@ describe Bitmovin::Encoding::Encodings::Stream do
         }
       ],
       id: "a6336204-c929-4a61-b7a0-2cd6665114e9",
+      mode: "STANDARD",
       createQualityMetaData: true,
       createdAt: "2016-06-25T20:09:23.69Z",
       modifiedAt: "2016-06-25T20:09:23.69Z"
