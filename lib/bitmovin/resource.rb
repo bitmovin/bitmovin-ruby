@@ -22,6 +22,10 @@ module Bitmovin
       end
     end
 
+    def init_instance(path)
+      @instance_resource_path = path
+    end
+
     attr_accessor :id, :name, :description, :created_at, :modified_at
 
 
@@ -35,7 +39,7 @@ module Bitmovin
       end
 
       response = Bitmovin.client.post do |post|
-        post.url self.class.resource_path
+        post.url resource_path
         post.body = collect_attributes
       end
       yield(response.body) if block_given?
@@ -48,7 +52,7 @@ module Bitmovin
     end
 
     def delete!
-      Bitmovin.client.delete File.join(self.class.resource_path, @id)
+      Bitmovin.client.delete File.join(resource_path, @id)
     end
 
     def inspect
@@ -56,6 +60,10 @@ module Bitmovin
     end
 
     private
+
+    def resource_path
+      @instance_resource_path || self.class.resource_path
+    end
 
     def init_from_hash(hash = {})
       hash.each do |name, value|
