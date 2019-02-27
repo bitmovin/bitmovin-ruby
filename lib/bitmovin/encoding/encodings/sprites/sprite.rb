@@ -3,7 +3,7 @@ module Bitmovin::Encoding::Encodings
 
     def initialize(encoding_id, stream_id, hash = {})
       @errors = []
-      self.class.init(File.join('/v1/encoding/encodings', encoding_id, 'streams', stream_id, 'sprites'))
+      init_instance(File.join('/v1/encoding/encodings', encoding_id, 'streams', stream_id, 'sprites'))
 
       @encoding_id = encoding_id
       @stream_id = stream_id

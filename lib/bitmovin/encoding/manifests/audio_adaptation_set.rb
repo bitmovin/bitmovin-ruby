@@ -2,8 +2,7 @@ module Bitmovin::Encoding::Manifests
   class AudioAdaptationSet < Bitmovin::Resource
     include Bitmovin::ChildCollection
     def initialize(manifest_id, period_id, hash = {})
-      path = File.join("/v1/encoding/manifests/dash/", manifest_id, "periods", period_id, "adaptationsets/audio")
-      self.class.init(path)
+      init_instance(File.join("/v1/encoding/manifests/dash/", manifest_id, "periods", period_id, "adaptationsets/audio"))
       @manifest_id = manifest_id
       @period_id = period_id
     end
