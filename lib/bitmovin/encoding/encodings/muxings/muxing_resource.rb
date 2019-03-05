@@ -8,7 +8,7 @@ module Bitmovin::Encoding::Encodings::Muxings
       hsh = ActiveSupport::HashWithIndifferentAccess.new(underscore_hash(hash))
       @encoding_id = encoding_id
       muxing_type = self.class.name.demodulize.gsub(/(.*)Muxing/, '\1').downcase
-      self.class.init(File.join("/v1/encoding/encodings/", encoding_id, "muxings", muxing_type))
+      init_instance(File.join("/v1/encoding/encodings/", encoding_id, "muxings", muxing_type))
       super(hsh)
       @outputs = (hsh[:outputs] || []).map do |output|
         Bitmovin::Encoding::StreamOutput.new(output)

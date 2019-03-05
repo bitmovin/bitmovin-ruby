@@ -9,7 +9,7 @@ module Bitmovin::Encoding::Encodings
       set_defaults
       hsh = ActiveSupport::HashWithIndifferentAccess.new(underscore_hash(hash))
       @encoding_id = encoding_id
-      self.class.init(File.join("/v1/encoding/encodings/", encoding_id, "streams"))
+      init_instance(File.join("/v1/encoding/encodings/", encoding_id, "streams"))
       super(hash)
       @outputs = (hsh[:outputs] || []).map { |output| Bitmovin::Encoding::StreamOutput.new(output) }
       @input_streams = (hsh[:input_streams] || []).map { |input| StreamInput.new(@encoding_id, @id, input) }

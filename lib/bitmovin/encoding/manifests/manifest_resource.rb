@@ -3,7 +3,7 @@ module Bitmovin::Encoding::Manifests
     def initialize(hash = {})
       hsh = ActiveSupport::HashWithIndifferentAccess.new(underscore_hash(hash))
       muxing_type = self.class.name.demodulize.gsub(/(.*)Muxing/, '\1').downcase
-      self.class.init(File.join("/v1/encoding/manifests/", encoding_id, "muxings", muxing_type))
+      init_instance(File.join("/v1/encoding/manifests/", encoding_id, "muxings", muxing_type))
       super(hsh)
       @outputs = (hsh[:outputs] || []).map do |output|
         Bitmovin::Encoding::Encodings::StreamOutput.new(encoding_id, @id, output)
