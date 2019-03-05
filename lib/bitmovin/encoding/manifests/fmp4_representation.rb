@@ -1,8 +1,7 @@
 module Bitmovin::Encoding::Manifests
   class Fmp4Representation < Bitmovin::Resource
     def initialize(manifest_id, period_id, adaptationset_id, hash = {})
-      path = File.join("/v1/encoding/manifests/dash/", manifest_id, "periods", period_id, "adaptationsets/", adaptationset_id, "representations/fmp4")
-      self.class.init(path)
+      init_instance(File.join("/v1/encoding/manifests/dash/", manifest_id, "periods", period_id, "adaptationsets/", adaptationset_id, "representations/fmp4"))
       super(hash)
       @manifest_id = manifest_id
       @period_id = period_id

@@ -1,11 +1,10 @@
 module Bitmovin::Encoding::Manifests
   class HlsVariantStreamList < Bitmovin::Resource
-    init "streams"
     attr_accessor :manifest_id
 
     def initialize(manifest_id)
       @manifest_id = manifest_id
-      self.class.init(File.join("/v1/encoding/manifests/", manifest_id, "streams"))
+      init_instance(File.join("/v1/encoding/manifests/", manifest_id, "streams"))
       #super(hsh)
     end
 

@@ -4,7 +4,7 @@ module Bitmovin::Webhooks
     def initialize(encoding_id = {}, hash = {})
       if encoding_id.kind_of?(String)
         @encoding_id = encoding_id
-        self.class.init("notifications/webhooks/encoding/encodings/#{encoding_id}/finished")
+        init_instance("notifications/webhooks/encoding/encodings/#{encoding_id}/finished")
       else
         hash = encoding_id
       end

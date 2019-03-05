@@ -11,7 +11,7 @@ module Bitmovin::Encoding::Encodings::Muxings::Drms
       @muxing_id = muxing_id
       muxing_type = self.class.name.demodulize.gsub(/(.*)Muxing.*/, '\1').downcase
       encryption_type = self.class.name.demodulize.gsub(/.*Muxing(.*)Encryption/, '\1').downcase
-      self.class.init(File.join("/v1/encoding/encodings/", encoding_id, "muxings", muxing_type, muxing_id, "drm", encryption_type))
+      init_instance(File.join("/v1/encoding/encodings/", encoding_id, "muxings", muxing_type, muxing_id, "drm", encryption_type))
       super(hsh)
       @outputs = (hsh[:outputs] || []).map do |output|
         Bitmovin::Encoding::StreamOutput.new(output)

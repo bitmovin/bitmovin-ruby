@@ -38,7 +38,7 @@ describe Bitmovin::Encoding::Encodings::Muxings::Drms::TsMuxingAesEncryption do
   it { should respond_to(:build_output).with(0..1).argument }
 
   it "should have correct EncryptionType" do
-    expect(subject.class.resource_path).to eq("/v1/encoding/encodings/encoding-id/muxings/ts/ts_id/drm/aes")
+    expect(subject.send "resource_path").to eq("/v1/encoding/encodings/encoding-id/muxings/ts/ts_id/drm/aes")
   end
 
   describe "outputs" do

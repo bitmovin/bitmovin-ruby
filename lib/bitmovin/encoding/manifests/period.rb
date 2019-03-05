@@ -3,7 +3,7 @@ module Bitmovin::Encoding::Manifests
     include Bitmovin::ChildCollection
 
     def initialize(manifest_id, hash = {})
-      self.class.init(File.join("/v1/encoding/manifests/dash/", manifest_id, "periods"))
+      init_instance(File.join("/v1/encoding/manifests/dash/", manifest_id, "periods"))
       @manifest_id = manifest_id
       super(hash)
       @video_adaptationsets = nil

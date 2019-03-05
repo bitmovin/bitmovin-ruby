@@ -8,7 +8,6 @@ module Bitmovin
       end
       attr_reader :resource_path
 
-
       def list(limit = 100, offset = 0)
         response = Bitmovin.client.get @resource_path, limit: limit, offset: offset
         Bitmovin::Helpers.result(response)['items'].map do |item|
@@ -77,10 +76,13 @@ module Bitmovin
       if (self.respond_to?(:ignore_fields))
         ignored_variables = self.ignore_fields
       end
+      ignored_variables.push(:@instance_resource_path)
+
       instance_variables.each do |name|
         if ignored_variables.include?(name)
           next
         end
+
         if name == :@max_ctu_size
           val['maxCTUSize'] = instance_variable_get(name)
         else
