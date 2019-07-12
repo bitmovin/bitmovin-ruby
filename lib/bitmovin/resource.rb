@@ -71,26 +71,22 @@ module Bitmovin
     end
 
     def collect_attributes
-      val = Hash.new
       ignored_variables = []
       if (self.respond_to?(:ignore_fields))
         ignored_variables = self.ignore_fields
       end
       ignored_variables.push(:@instance_resource_path)
-
-      instance_variables.each do |name|
-        if ignored_variables.include?(name)
-          next
-        end
-
-        if name == :@max_ctu_size
-          val['maxCTUSize'] = instance_variable_get(name)
+      attributes_value = instance_variables.inject({}) do |result, item|
+        if ignored_variables.include?(item)
+          result
         else
-          json_name = ActiveSupport::Inflector.camelize(name.to_s.gsub(/@/, ''), false)
-          val[json_name] = instance_variable_get(name)
+          name = item == :@max_ctu_size ? 'maxCTUSize' : item.to_s.gsub(/@/, '')
+          result.merge(
+            name => instance_variable_get(item)
+          )
         end
       end
-      val
+      camelize_hash(attributes_value)
     end
   end
 end
