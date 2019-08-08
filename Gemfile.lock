@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bitmovin-ruby (0.8.0)
+    bitmovin-ruby (0.8.2)
       activesupport (>= 4.0.0)
       faraday (~> 0.11.0)
       faraday_middleware (~> 0.11.0)
@@ -58,7 +58,7 @@ GEM
     lumberjack (1.0.11)
     method_source (0.8.2)
     minitest (5.10.1)
-    multipart-post (2.0.0)
+    multipart-post (2.1.1)
     nenv (0.3.0)
     notiffany (0.1.1)
       nenv (~> 0.1)
@@ -123,4 +123,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.15.1
+   1.17.3
