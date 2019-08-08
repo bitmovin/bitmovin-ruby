@@ -53,7 +53,6 @@ describe Bitmovin::Client do
 
   describe "delete" do
     subject { Bitmovin::Client.new({ api_key: 'test' }) }
-    # subject { Bitmovin::Client.new({ api_key: 'test' }) }
     it "should make DELETE http call with API key as header" do
       stub_request(:delete, 'https://api.bitmovin.com/v1/account/information')
         .with(headers: { 'X-Api-Key': 'test' })
