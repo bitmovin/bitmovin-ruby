@@ -13,3 +13,4 @@ delete.rb
 *.gem
 examples/*_customer.rb
 .idea
+.vscode/
