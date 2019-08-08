@@ -21,8 +21,8 @@ require 'bitmovin/webhooks'
 module Bitmovin
   @@client = nil
 
-  def self.init(api_key)
-    @@client = Client.new({ api_key: api_key })
+  def self.init(api_key, organisation_id = nil)
+    @@client = Client.new({ api_key: api_key, organisation_id: organisation_id })
   end
 
   def self.client

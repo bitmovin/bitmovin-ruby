@@ -21,6 +21,15 @@ describe Bitmovin::Client do
       expect(subject.get('account/information')).to have_requested(:get, 'https://api.bitmovin.com/v1/account/information')
     end
 
+    it "should make GET http call with API key and Organisation ID in the header" do
+      client_with_organisation_id = Bitmovin::Client.new({ api_key: 'test', organisation_id: 'foobar' })
+      stub_request(:get, 'https://api.bitmovin.com/v1/account/information')
+        .with(headers: { 'X-Api-Key': 'test' })
+        .with(headers: { 'X-Tenant-Org-id': 'foobar'})
+
+      expect(client_with_organisation_id.get('account/information')).to have_requested(:get, 'https://api.bitmovin.com/v1/account/information')
+    end
+
     it "should set X-Api-Client-Version to Bitmovin::VERSION" do
       stub_request(:get, 'https://api.bitmovin.com/v1/account/information')
         .with(headers: { 'X-Api-Client-Version': Bitmovin::VERSION })
@@ -44,11 +53,21 @@ describe Bitmovin::Client do
 
   describe "delete" do
     subject { Bitmovin::Client.new({ api_key: 'test' }) }
+    # subject { Bitmovin::Client.new({ api_key: 'test' }) }
     it "should make DELETE http call with API key as header" do
       stub_request(:delete, 'https://api.bitmovin.com/v1/account/information')
         .with(headers: { 'X-Api-Key': 'test' })
 
       expect(subject.delete('account/information')).to have_requested(:delete, 'https://api.bitmovin.com/v1/account/information')
+    end
+
+    it "should make DELETE http call with API key and Organisation ID in the header" do
+      client_with_organisation_id = Bitmovin::Client.new({ api_key: 'test', organisation_id: 'foobar' })
+      stub_request(:delete, 'https://api.bitmovin.com/v1/account/information')
+        .with(headers: { 'X-Api-Key': 'test' })
+        .with(headers: { 'X-Tenant-Org-Id': 'foobar'})
+
+      expect(client_with_organisation_id.delete('account/information')).to have_requested(:delete, 'https://api.bitmovin.com/v1/account/information')
     end
 
     it "should set X-Api-Client-Version to Bitmovin::VERSION" do

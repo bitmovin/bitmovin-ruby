@@ -6,12 +6,14 @@ module Bitmovin
     def initialize(config)
       @api_key = config[:api_key]
       @base_url = "https://api.bitmovin.com/v1"
-      @conn = Faraday.new(url: @base_url, headers: {
-          'X-Api-Key' => @api_key,
-          'X-Api-Client-Version' => Bitmovin::VERSION,
-          'X-Api-Client' => 'bitmovin-ruby',
-          'Content-Type' => 'application/json'
-        }) do |faraday|
+      headers = {
+        'X-Api-Key' => @api_key,
+        'X-Api-Client-Version' => Bitmovin::VERSION,
+        'X-Api-Client' => 'bitmovin-ruby',
+        'Content-Type' => 'application/json'
+      }
+      headers['X-Tenant-Org-Id'] = config[:organisation_id] if config[:organisation_id]
+      @conn = Faraday.new(url: @base_url, headers: headers) do |faraday|
 
         faraday.request :json
         #faraday.response :logger
