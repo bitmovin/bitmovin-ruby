@@ -35,7 +35,10 @@ module Bitmovin::Encoding::Encodings::InputStreams
       @errors << "input_id cannot be blank" if @input_id.blank?
       @errors << "input_path cannot be blank" if @input_path.blank?
       @errors << "selection_mode cannot be blank" if @selection_mode.blank?
-      @errors << "position cannot be blank if selection_mode is not AUTO" if @position.blank? && @selection_mode != "AUTO"
+
+      if @position.blank? && @selection_mode != "AUTO"
+        @errors << "position cannot be blank if selection_mode is not AUTO"
+      end
     end
   end
 end

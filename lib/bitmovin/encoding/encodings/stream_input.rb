@@ -10,7 +10,7 @@ module Bitmovin::Encoding::Encodings
     end
 
     attr_accessor :encoding_id, :stream_id
-    attr_accessor :input_id, :input_path, :selection_mode, :position
+    attr_accessor :input_id, :input_path, :selection_mode, :position, :input_stream_id
 
     def valid?
       validate!
@@ -29,10 +29,10 @@ module Bitmovin::Encoding::Encodings
       collect_attributes.to_json(args)
     end
 
-    private 
+    private
     def collect_attributes
       val = Hash.new
-      [:input_id, :input_path, :selection_mode, :position].each do |name|
+      [:input_id, :input_path, :selection_mode, :position, :input_stream_id].each do |name|
         json_name = ActiveSupport::Inflector.camelize(name.to_s, false)
         value = instance_variable_get("@#{name}")
         if (!value.nil?)
@@ -42,6 +42,8 @@ module Bitmovin::Encoding::Encodings
       val
     end
     def validate!
+      return unless @input_stream_id.blank?
+
       @errors << "input_id cannot be blank" if @input_id.blank?
       @errors << "input_path cannot be blank" if @input_path.blank?
       @errors << "selection_mode cannot be blank" if @selection_mode.blank?
