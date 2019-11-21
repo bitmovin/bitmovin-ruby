@@ -34,10 +34,8 @@ module Bitmovin::Encoding::Encodings
 
         def validate!
           @errors = []
-          if @input_stream_id.empty?
-            @errors << "Input Stream Id must be set"
-          end
 
+          @errors << "Input Stream Id must be set" unless @input_stream_id
           @errors << "Offset must be set" unless @offset
           @errors << "Duration must be set" unless @duration
           @errors << "Duration must be greater than zero" if @duration.to_i <= 0
