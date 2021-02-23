@@ -37,5 +37,13 @@ describe Bitmovin::Encoding::Encodings::StreamInput do
     it "should be valid if all is set" do
       expect(subject).to be_valid
     end
+    it "with input_stream_id it should be valid" do
+      subject.input_id = nil
+      subject.input_path = ""
+      subject.position = ""
+      subject.input_stream_id = "stream-id"
+
+      expect(subject).to be_valid
+    end
   end
 end
