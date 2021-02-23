@@ -6,6 +6,7 @@
 /pkg/
 /spec/reports/
 /tmp/
+/vendor/
 test.rb
 test-manifest.rb
 test_encoding.rb
