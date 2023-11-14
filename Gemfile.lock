@@ -2,10 +2,12 @@ PATH
   remote: .
   specs:
     bitmovin-ruby (0.9.0)
-      activesupport (>= 4.0.0)
+      activesupport (>= 7.0.8)
       faraday (~> 2.2.0)
+      faraday-httpclient
       faraday-multipart
       faraday-retry
+      httpclient (~> 2.8.3, >= 2.8.3)
 
 GEM
   remote: https://rubygems.org/
@@ -28,6 +30,8 @@ GEM
     faraday (2.2.0)
       faraday-net_http (~> 2.0)
       ruby2_keywords (>= 0.0.4)
+    faraday-httpclient (2.0.1)
+      httpclient (>= 2.2)
     faraday-multipart (1.0.4)
       multipart-post (~> 2)
     faraday-net_http (2.1.0)
@@ -50,6 +54,7 @@ GEM
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
     hashdiff (1.0.1)
+    httpclient (2.8.3)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     listen (3.8.0)
@@ -114,7 +119,7 @@ DEPENDENCIES
   guard-rspec
   pry
   rake (~> 13.0)
-  rspec (~> 3.0)
+  rspec (~> 3.12)
   rspec-collection_matchers
   simplecov
   webmock
