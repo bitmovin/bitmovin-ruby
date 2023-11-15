@@ -15,7 +15,7 @@ require "rspec/collection_matchers"
 
 RSpec.configure do |rspec|
   rspec.before(:all) do
-    Bitmovin.init({ api_key: 'test' })
+    Bitmovin.init('test')
   end
 end
 
