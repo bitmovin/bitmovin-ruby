@@ -7,7 +7,6 @@ group :development do
    gem 'simplecov'
    gem 'codecov', :require => false, :group => :test
    gem 'rspec-collection_matchers'
-   gem "pry"
 end
 
 gem 'activesupport', '7.0.8'
