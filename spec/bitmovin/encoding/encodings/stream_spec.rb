@@ -61,7 +61,7 @@ describe Bitmovin::Encoding::Encodings::Stream do
     it { is_expected.to have_attributes(create_quality_meta_data: true) }
     it { is_expected.to have_attributes(id: "a6336204-c929-4a61-b7a0-2cd6665114e9") }
     it { is_expected.to have_attributes(codec_configuration: "d09c1a8a-4c56-4392-94d8-81712118aae0") }
-    it "should initialze outputs" do
+    it "should initialize outputs" do
       expect(subject).to have_exactly(1).outputs
       expect(subject.outputs).to include(have_attributes(output_id: "55354be6-0237-42bb-ae85-a2d4ef1ed19e")) 
     end

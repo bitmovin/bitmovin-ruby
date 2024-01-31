@@ -101,7 +101,7 @@ mp4_muxing.streams << video_stream.id
 mp4_muxing.streams << audio_stream.id
 mp4_muxing.save!
 
-# Start the encoding proccess
+# Start the encoding process
 enc.start!
 
 # Monitor the encoding finish
