@@ -1,4 +1,4 @@
-# [![bitmovin](http://bitmovin-a.akamaihd.net/webpages/bitmovin-logo-github.png)](http://www.bitmovin.com) Bitmovin::Ruby API Client
+# [![bitmovin](http://bitmovin-a.akamaihd.net/webpages/bitmovin-logo-github.png)](http://www.bitmovin.com) Bitmovin::Ruby API Client (DEPRECATED)
 [![codecov](https://codecov.io/gh/bitmovin/bitmovin-ruby/branch/develop/graph/badge.svg)](https://codecov.io/gh/bitmovin/bitmovin-ruby)
 [![Build Status](https://travis-ci.org/bitmovin/bitmovin-ruby.svg?branch=develop)](https://travis-ci.org/bitmovin/bitmovin-ruby)
 
@@ -6,6 +6,14 @@ Bitmovin::Ruby API-Client which enables you to seamlessly integrate the [Bitmovi
 Using this API client requires an active account. [Sign up for a Bitmovin API key](https://bitmovin.com/bitmovins-video-api/).
 
 The full [Bitmovin API reference](https://bitmovin.com/encoding-documentation/bitmovin-api/) can be found on our website.
+
+## Deprecation Notice
+
+`bitmovin-ruby` is the legacy Bitmovin API client for Ruby and is not maintained anymore.
+
+We recommend using one of the newer clients, you can find a list of available clients in our [Bitmovin Docs](https://developer.bitmovin.com/encoding/docs/sdks). 
+
+Using one of the newer clients guarantees 100% specification conformity at any given time and access to all features of the API as soon as they are released. Unfortunately, currently there is no new client available for the Ruby programming language yet.
 
 ## Installation
 
