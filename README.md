@@ -13,7 +13,7 @@ The full [Bitmovin API reference](https://bitmovin.com/encoding-documentation/bi
 
 We recommend using one of the newer clients, you can find a list of available clients in our [Bitmovin Docs](https://developer.bitmovin.com/encoding/docs/sdks). 
 
-Using one of the newer clients guarantees 100% specification conformity at any given time and access to all features of the API as soon as they are released. Unfortunately, currently there is no new client available for the Ruby programming languate yet.
+Using one of the newer clients guarantees 100% specification conformity at any given time and access to all features of the API as soon as they are released. Unfortunately, currently there is no new client available for the Ruby programming language yet.
 
 ## Installation
 
