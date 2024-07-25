@@ -11,7 +11,9 @@ The full [Bitmovin API reference](https://bitmovin.com/encoding-documentation/bi
 
 `bitmovin-ruby` is the legacy Bitmovin API client for Ruby and is not maintained anymore.
 
-We recommend using one of the newer clients, you can find a list of available clients in our [Bitmovin Docs](https://developer.bitmovin.com/encoding/docs/sdks). Using the new client guarantees 100% specification conformity at any given time and access to all features of the API as soon as they are released. Unfortunately, currently there is no new client available for the Ruby programming languate yet.
+We recommend using one of the newer clients, you can find a list of available clients in our [Bitmovin Docs](https://developer.bitmovin.com/encoding/docs/sdks). 
+
+Using the new client guarantees 100% specification conformity at any given time and access to all features of the API as soon as they are released. Unfortunately, currently there is no new client available for the Ruby programming languate yet.
 
 ## Installation
 
