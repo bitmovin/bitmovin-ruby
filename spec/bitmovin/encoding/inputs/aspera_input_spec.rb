@@ -8,8 +8,8 @@ detail = ActiveSupport::HashWithIndifferentAccess.new({
   host: '127.0.0.1',
   username: 'root',
   password: 'secret',
-  minBandwith: '100m',
-  maxBandwith: '100k'
+  minBandwidth: '100m',
+  maxBandwidth: '100k'
 })
 list_response = response_envelope({
   items: [detail]
